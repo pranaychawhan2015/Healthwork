@@ -1,0 +1,1 @@
+[34m2022-05-17 16:58:37.917 IST [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001[0m Chaincode invoke successful. result: status:200 payload:"[]" 
