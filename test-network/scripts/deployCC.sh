@@ -29,7 +29,7 @@ println "- DELAY: ${C_GREEN}${DELAY}${C_RESET}"
 println "- MAX_RETRY: ${C_GREEN}${MAX_RETRY}${C_RESET}"
 println "- VERBOSE: ${C_GREEN}${VERBOSE}${C_RESET}"
 
-FABRIC_CFG_PATH=$PWD/../config/
+FABRIC_CFG_PATH=${PWD}/../config/
 
 #User has not provided a name
 if [ -z "$CC_NAME" ] || [ "$CC_NAME" = "NA" ]; then
@@ -154,7 +154,7 @@ approveForMyOrg() {
   PEER=$2
   setGlobals $ORG $PEER
   set -x
-  peer lifecycle chaincode approveformyorg -o localhost:7050 localhost:7055 localhost:7056 --ordererTLSHostnameOverride orderer1.example.com orderer2.example.com orderer3.example.com --tls --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} >&log.txt
+  peer lifecycle chaincode approveformyorg --endorsement-plugin escc  -o localhost:7050 localhost:7055 localhost:7056 --ordererTLSHostnameOverride orderer1.example.com orderer2.example.com orderer3.example.com --tls --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
@@ -177,7 +177,7 @@ checkCommitReadiness() {
     sleep $DELAY
     infoln "Attempting to check the commit readiness of the chaincode definition on peer${PEER}.org${ORG}, Retry after $DELAY seconds."
     set -x
-    peer lifecycle chaincode checkcommitreadiness  --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} --output json >&log.txt
+    peer lifecycle chaincode checkcommitreadiness --endorsement-plugin escc --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} --output json >&log.txt
     res=$?
     { set +x; } 2>/dev/null
     let rc=0
@@ -204,7 +204,7 @@ commitChaincodeDefinition() {
   # peer (if join was successful), let's supply it directly as we know
   # it using the "-o" option
   set -x
-  peer lifecycle chaincode commit -o localhost:7050 localhost:7055 localhost:7056 --ordererTLSHostnameOverride orderer1.example.com orderer2.example.com orderer3.example.com --tls --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} $PEER_CONN_PARMS --version ${CC_VERSION} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} >&log.txt
+  peer lifecycle chaincode commit --endorsement-plugin escc -o localhost:7050 localhost:7055 localhost:7056 --ordererTLSHostnameOverride orderer1.example.com orderer2.example.com orderer3.example.com --tls --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} $PEER_CONN_PARMS --version ${CC_VERSION} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
@@ -289,23 +289,31 @@ chaincodeQuery() {
 }
 
 ## package the chaincode
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+infoln "FABRIC PATH :  ${FABRIC_CFG_PATH}"
 packageChaincode
 
 ## Install chaincode on peer0.org1 and peer0.org2
 infoln "Installing chaincode on peer0.org1..."
 installChaincode 1 0
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+infoln "FABRIC PATH :  ${FABRIC_CFG_PATH}"
+
 infoln "Installing chaincode on peer1.org1..."
 installChaincode 1 1
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 infoln "Install chaincode on peer2.org1..."
 installChaincode 1 2
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 infoln "Install chaincode on peer3.org1..."
 installChaincode 1 3
 
-FABRIC_CFG_PATH=$PWD/../config/
+FABRIC_CFG_PATH=${PWD}/../config/
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Install chaincode on peer0.org2..."
 installChaincode 2 0
@@ -333,11 +341,13 @@ infoln "Install chaincode on peer3.org4..."
 installChaincode 4 3
 
 ## query whether the chaincode is installed
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 queryInstalled 1 0
 
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 ## approve the definition for org1
 approveForMyOrg 1 1
@@ -347,7 +357,9 @@ approveForMyOrg 1 1
 ## expect org1 to have approved and org2 not to
 checkCommitReadiness 1 1
 
-FABRIC_CFG_PATH=$PWD/../config/
+FABRIC_CFG_PATH=${PWD}/../config/
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 ## now approve also for org2
 approveForMyOrg 2 1
 #approveForMyOrg 2 1

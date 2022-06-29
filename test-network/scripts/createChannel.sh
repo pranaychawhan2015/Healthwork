@@ -45,7 +45,7 @@ createChannel() {
 
 # joinChannel ORG
 joinChannel() {
-  #FABRIC_CFG_PATH=$PWD/../config/
+  #FABRIC_CFG_PATH=${PWD}/../config/
   ORG=$1
   PEER=$2
   setGlobals $ORG $PEER
@@ -72,13 +72,15 @@ setAnchorPeer() {
 }
 
 FABRIC_CFG_PATH=${PWD}/configtx
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 ## Create channeltx
 infoln "Generating channel create transaction '${CHANNEL_NAME}.tx'"
 createChannelTx
 
-#FABRIC_CFG_PATH=$PWD/../config/
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/../config/
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 BLOCKFILE="./channel-artifacts/${CHANNEL_NAME}.block"
 
@@ -88,19 +90,28 @@ createChannel
 successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 infoln "Joining peer0.org1 to the channel..."
 joinChannel 1 0
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 infoln "Joining peer1.org1 to the channel..."
 joinChannel 1 1
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 infoln "Joining peer2.org1 to the channel..."
 joinChannel 1 2
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 infoln "Joining peer3.org1 to the channel..."
 joinChannel 1 3
-FABRIC_CFG_PATH=$PWD/../config/
+FABRIC_CFG_PATH=${PWD}/../config/
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Joining peer0.org2 to the channel..."
 joinChannel 2 0
@@ -129,10 +140,14 @@ joinChannel 4 3
 
 
 ## Set the anchor peers for each org in the channel
-FABRIC_CFG_PATH=$PWD/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 infoln "Setting peer0 as anchor peer for org1..."
 setAnchorPeer 1 0
-FABRIC_CFG_PATH=$PWD/../config/
+FABRIC_CFG_PATH=${PWD}/../config/
+infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
+
 infoln "Setting peer0 as anchor peer for org2..."
 setAnchorPeer 2 0
 infoln "Setting peer0 as anchor peer for org3..."

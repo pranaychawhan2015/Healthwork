@@ -336,6 +336,7 @@ async function main() {
         console.log('failed Count ' + failCount);
         console.log('pass ' + passCount);
 
+        
         // Disconnect from the gateway.
         gateway.disconnect();
         

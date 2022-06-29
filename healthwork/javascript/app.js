@@ -9,6 +9,7 @@ const {QueryHandler, QueryHandlerFactory, Query, QueryResults, ServiceHandler} =
 const path = require('path');
 const FabricCAServices = require('fabric-ca-client');
 const { json, query } = require('express');
+const {endorser} = require('fabric-common');
 //const { createQueryHandler }  = require('../javascript/MyQueryHandler');
 const { channel, Channel } = require('diagnostics_channel');
 const { QueryImpl } = require('fabric-network/lib/impl/query/query');
@@ -19,6 +20,7 @@ const { TransactionEventStrategy } = require('fabric-network/lib/impl/event/tran
 const {Network} = require('fabric-network');
 const {DiscoveryService, IdentityContext, Client, Discoverer} = require('fabric-common');
 const {couchdb} = require('couchdb');
+const { publicEncrypt } = require('crypto');
 
 //const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
 //const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
@@ -316,7 +318,8 @@ app.put('/patients', async (req, res) => {
            endorsement.build(new IdentityContext(userContext, network.getChannel().client), build_proposal_request);
            endorsement.sign(new IdentityContext(userContext, network.getChannel().client));       
            const handler = discovery.newHandler();
-   
+           
+           
            // do not specify 'targets', use a handler instead
            const  endorse_request = {
                targets: endorsers,

@@ -36,9 +36,9 @@ rm -rf go/wallet/*
 # launch network; create channel and join peer to channel
 pushd ../test-network
 ./network.sh down
-./network.sh up createChannel -ca -s couchdb
+./network.sh up createChannel -ca -s couchdb -cccg /home/cps16/Documents/Medical_Records/config/collections-config.json
 #./network.sh deployCC -ccn connectionLayer -ccv 1 -ccl 'go' -ccp '../chaincode/go'
-./network.sh deployCC -ccn healthwork -ccv 1 -cci initLedger -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH}
+./network.sh deployCC -ccn healthwork -ccv 1 -cccg /home/cps16/Documents/Medical_Records/config/collections-config.json -cci initLedger -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH}
 popd
 
 cat <<EOF

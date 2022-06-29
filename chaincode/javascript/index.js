@@ -7,6 +7,8 @@
 'use strict';
 
 const HealthWork = require('./lib/HealthWork');
+const Student = require('./lib/Student');
 
 module.exports.HealthWork = HealthWork;
-module.exports.contracts = [ HealthWork ];
+module.exports.Student = Student;
+module.exports.contracts = [ HealthWork,Student ];

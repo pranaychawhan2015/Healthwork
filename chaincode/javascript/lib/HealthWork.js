@@ -27,8 +27,12 @@ class HealthWork extends Contract {
                 Age: 24,
                 Doctor_Specialization: 'Orthopedics',
                 Disease: 'Osteoarthritis',
-                Email: 'Raju@google.com'
+                Email: 'Raju@google.com',
             },
+            // {
+            //     Name: 'API',
+            //     Value: 'Public Key'
+            // }
             {
                 Name: 'Sam',
                 Age: 50,
@@ -229,7 +233,7 @@ class HealthWork extends Contract {
             }
             allResults.push({ Key: key, Record: record });
         }
-
+        ctx.stub.
         console.info('============= END : changeCarOwner ===========');
 
         return JSON.stringify(allResults);
@@ -338,8 +342,9 @@ class HealthWork extends Contract {
 
     async getfunctionKey(ctx, key)
     {
-        const data = ctx.stub.getTransient();
+        //const data = ctx.stub.getTransient();
 
+        const data = await ctx.stub.getSignedProposal();
         return data;
 
     }

@@ -125,7 +125,7 @@ peer:
         # Overrides the endpoint that the peer publishes to peers
         # in its organization. For peers in foreign organizations
         # see 'externalEndpoint'
-        endpoint: peer3.org1.example.com
+        endpoint: peer3.org1.example.com:8055
         # Maximum count of blocks stored in memory
         maxBlockCountToStore: 10
         # Max time between consecutive message pushes(unit: millisecond)
@@ -179,7 +179,7 @@ peer:
         msgExpirationFactor: 20
         # This is an endpoint that is published to peers outside of the organization.
         # If this isn't set, the peer will not be known to other organizations.
-        externalEndpoint: peer3.org1.example.com
+        externalEndpoint: peer3.org1.example.com:8055
         # Leader election service configuration
         election:
             # Longest time peer waits for stable membership during leader election startup (unit: second)
@@ -342,7 +342,7 @@ peer:
             Security:
 
     # Path on the file system where peer will find MSP local configurations
-    mspConfigPath: /home/cps16/Documents/Medical_Records/test-network/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/msp
+    mspConfigPath: /etc/hyperledger/fabric/msp
 
     #/home/cps16/Documents/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
     # Identifier of the local MSP
@@ -395,11 +395,11 @@ peer:
         enabled:     false
         listenAddress: 0.0.0.0:6060
 
-    # Handlers defines custom handlers that can filter and mutate
+    # Handlers defines CustomEndorsement handlers that can filter and mutate
     # objects passing within the peer, such as:
     #   Auth filter - reject or forward proposals from clients
     #   Decorators  - append or mutate the chaincode input passed to the chaincode
-    #   Endorsers   - Custom signing over proposal response payload and its mutation
+    #   Endorsers   - CustomEndorsement signing over proposal response payload and its mutation
     # Valid handler definition contains:
     #   - A name which is a factory method name defined in
     #     core/handlers/library/library.go for statically compiled handlers
@@ -438,8 +438,11 @@ peer:
             name: DefaultDecorator
         endorsers:
           escc:
-            name: CustomEndorsement
-            library: /etc/hyperledger/fabric/plugins/CustomEndorsement.so
+            name: plugin-escc
+            library: /etc/hyperledger/fabric/plugins/plugin.so
+          custom:
+            name: plugin-escc
+            library: /home/cps16/Documents/go-plugin-fabric/escc.so
         validators:
           vscc:
             name: DefaultValidation
@@ -630,7 +633,7 @@ chaincode:
         lscc: enable
         qscc: enable
         escc: enable
-        custom: enable
+        CustomEndorsement: enable
 
     # Logging section for the chaincode container
     logging:

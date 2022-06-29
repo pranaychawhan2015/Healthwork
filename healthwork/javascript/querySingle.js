@@ -21,6 +21,7 @@ const { TextDecoder } = require('util');
 const openssl = require('openssl');
 const { StringDecoder } = require('string_decoder');
 const Endorser = require('fabric-common');
+//const { json } = require('stream/consumers');
 
 //const ClientIdentity = require('fabric-shim').ClientIdentity;
 
@@ -97,11 +98,11 @@ async function main() {
         
         //await contract2.submitTransaction('initLedger');
 
-        const discovery = new DiscoveryService('healthwork', network.getChannel());
+        //const discovery = new DiscoveryService('healthwork', network.getChannel());
         const userContext = await provider.getUserContext(newX509Identity, 'appUser');
   
-        const discoverer = new Discoverer('pranaychawhan@gmail.com', network.getChannel().client, 'Org1MSP');
-        await discoverer.connect(network.getChannel().getEndorsers()[0].endpoint);
+        //const discoverer = new Discoverer('pranaychawhan@gmail.com', network.getChannel().client, 'Org1MSP');
+        //await discoverer.connect(network.getChannel().getEndorsers()[0].endpoint);
         
         let peer0Org1Count = 0;
         let peer1Org1Count = 0;
@@ -144,180 +145,187 @@ async function main() {
 
         let counter = 0;
 
+        
         console.log("Endorsers : " + network.getChannel().getEndorsers());
         let passCount = 0;
         let failCount = 0;
 
         let result3 = await contract2.evaluateTransaction('getfunctionKey', '');
-        console.log('result3 : ' + result3);
-        for(let i=0; i< 100; i++)
-        {
-            //const endorsement = network.getChannel().newEndorsement('healthwork');
-            //discovery.build(new IdentityContext(userContext, network.getChannel().client), {endorsement: endorsement});
-            //discovery.sign(new IdentityContext(userContext, network.getChannel().client));
-            //const discovery_results = await discovery.send({targets: [discoverer], asLocalhost: true});
-            // let build_proposal_request = {
-            //     args: ['dischargeReport', 'pranaychawhan','pranaychawhan']
-            //     };
+        console.log('result3 : ' + JSON.parse(result3).signature);
+        // for(let i=0; i< 100; i++)
+        // {
+        //     //const endorsement = network.getChannel().newEndorsement('healthwork');
+        //     //discovery.build(new IdentityContext(userContext, network.getChannel().client), {endorsement: endorsement});
+        //     //discovery.sign(new IdentityContext(userContext, network.getChannel().client));
+        //     //const discovery_results = await discovery.send({targets: [discoverer], asLocalhost: true});
+        //     // let build_proposal_request = {
+        //     //     args: ['dischargeReport', 'pranaychawhan','pranaychawhan']
+        //     //     };
     
-            //endorsement.build(new IdentityContext(userContext, network.getChannel().client), build_proposal_request);
-            //endorsement.sign(new IdentityContext(userContext, network.getChannel().client));       
-            //const handler = discovery.newHandler();
+        //     //endorsement.build(new IdentityContext(userContext, network.getChannel().client), build_proposal_request);
+        //     //endorsement.sign(new IdentityContext(userContext, network.getChannel().client));       
+        //     //const handler = discovery.newHandler();
             
             
-            // do not specify 'targets', use a handler instead
-            // const  endorse_request = {
-            //     targets: network.getChannel().getEndorsers(),
-            //     requestTimeout: 60000
-            // };
+        //     // do not specify 'targets', use a handler instead
+        //     // const  endorse_request = {
+        //     //     targets: network.getChannel().getEndorsers(),
+        //     //     requestTimeout: 60000
+        //     // };
             
-            // const endorse_results = await endorsement.send(endorse_request); 
-            // console.log('endorse_results',Buffer.from(endorse_results.responses[0].endorsement.signature, 'utf8').toString());
-            // let list = [];
-            // //console.log("proposal :", endorsement.getSignedProposal());
-            // const endorserment_result = await handler.endorse(endorsement.getSignedProposal(), build_proposal_request)
-            // if(endorserment_result[0].peer.startsWith("peer0.org1.example.com"))
-            // {
-            //     ++failCount;
-            //     //const x509 = new crypto.X509Certificate(endorserment_result[0].endorsement.signature);
-            //     //let cryptoResult = crypto.privateDecrypt(fs.readFileSync('/home/cps16/Documents/Medical_Records/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/keystore/de79585c039d4061b392d782f42cea3b1be6e09a0351f173e81b3707d63586ae_sk'),endorserment_result[0].endorsement.signature.toString());
-            //     console.log('crypto Result : ',endorserment_result[0].payload.toString());
-            // }
-            // else
-            // {
-            //     ++passCount;
-            //     console.log("passed");
-            // }
-            // const decoder = new StringDecoder('utf8');
-            // const data = Buffer.from(endorserment_result[0].endorsement.signature.toString());
-            // console.log('endorsement : ',decoder.write(data));
-            
-            
-            // //console.log('endorser results : '+ endorse_results.responses[0].endorsement.endorser.toString());
-            // endorse_results.responses.forEach(element=>{
-            //     if(element.endorsement.endorser.includes(peer0Org1))
-            //     {
-            //         list.push('peer0.org1');
-            //         ++peer0Org1Count
-            //     }
-            //     if(element.endorsement.endorser.includes(peer1Org1))
-            //     {
-            //         list.push('peer1.org1');
-            //         ++peer1Org1Count;
-            //     }
-            //     if(element.endorsement.endorser.includes(peer2Org1))
-            //     {
-            //         list.push('peer2.org1');
-            //         ++peer2Org1Count;
-            //     }
-            //     if(element.endorsement.endorser.includes(peer3Org1))
-            //     {
-            //         list.push('peer3.org1');
-            //         ++peer3Org1Count;
-            //     }
-
-            //     if(element.endorsement.endorser.includes(peer0Org2))
-            //     {
-            //         list.push('peer0.org2');
-            //         ++peer0Org2Count;
-            //     }
-
-            //     if(element.endorsement.endorser.includes(peer1Org2))
-            //     {
-            //         list.push('peer1.org2');
-            //         ++peer1Org2Count;
-            //     }
-
-            //     if(element.endorsement.endorser.includes(peer2Org2))
-            //     {
-            //         list.push('peer2.org2');
-            //         ++peer2Org2Count;
-            //     }
-            //     if(element.endorsement.endorser.includes(peer3Org2))
-            //     {
-            //         list.push('peer3.org2');
-            //         ++peer3Org2Count;
-            //     }
-
-
-
-            //     if(element.endorsement.endorser.includes(peer0Org3))
-            //     {
-            //         list.push('peer0.org3');
-            //         ++peer0Org3Count;
-            //     }
-
-            //     if(element.endorsement.endorser.includes(peer1Org3))
-            //     {
-            //         list.push('peer1.org3');
-            //         ++peer1Org3Count;
-            //     }
-
-            //     if(element.endorsement.endorser.includes(peer2Org3))
-            //     {
-            //         list.push('peer2.org3');
-            //         ++peer2Org3Count;
-            //     }
-            //     if(element.endorsement.endorser.includes(peer3Org3))
-            //     {
-            //         list.push('peer3.org3');
-
-            //         ++peer3Org3Count;
-            //     }
-
-
-
-            //     if(element.endorsement.endorser.includes(peer0Org4))
-            //     {
-            //         list.push('peer0.org4');
-            //         ++peer0Org4Count;
-            //     }
-
-            //     if(element.endorsement.endorser.includes(peer1Org4))
-            //     {
-            //         list.push('peer1.org4');
-            //         ++peer1Org4Count;
-            //     }
-
-            //     if(element.endorsement.endorser.includes(peer2Org4))
-            //     {
-            //         list.push('peer2.org4');
-            //         ++peer2Org4Count;
-            //     }
-            //     if(element.endorsement.endorser.includes(peer3Org4))
-            //     {
-            //         list.push('peer3.org4');
-            //         ++peer3Org4Count;
-            //     }
-
-
-
-            // })
-
-            
-            // const commit = endorsement.newCommit();
+        //     // const endorse_results = await endorsement.send(endorse_request); 
+        //     // console.log('endorse_results',Buffer.from(endorse_results.responses[0].endorsement.signature, 'utf8').toString());
+        //     // let list = [];
+        //     // //console.log("proposal :", endorsement.getSignedProposal());
+        //     // const endorserment_result = await handler.endorse(endorsement.getSignedProposal(), build_proposal_request)
+        //     // if(endorserment_result[0].peer.startsWith("peer0.org1.example.com"))
+        //     // {
+        //     //     ++failCount;
+        //     //     //const x509 = new crypto.X509Certificate(endorserment_result[0].endorsement.signature);
+        //     //     //let cryptoResult = crypto.privateDecrypt(fs.readFileSync('/home/cps16/Documents/Medical_Records/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/keystore/de79585c039d4061b392d782f42cea3b1be6e09a0351f173e81b3707d63586ae_sk'),endorserment_result[0].endorsement.signature.toString());
+        //     //     console.log('crypto Result : ',endorserment_result[0].payload.toString());
+        //     // }
+        //     // else
+        //     // {
+        //     //     ++passCount;
+        //     //     console.log("passed");
+        //     // }
+        //     // const decoder = new StringDecoder('utf8');
+        //     // const data = Buffer.from(endorserment_result[0].endorsement.signature.toString());
+        //     // console.log('endorsement : ',decoder.write(data));
             
             
-            // const  commit_request = {
-            //   handler: handler,
-            //   requestTimeout: 60000
-            //   };
+        //     // //console.log('endorser results : '+ endorse_results.responses[0].endorsement.endorser.toString());
+        //     // endorse_results.responses.forEach(element=>{
+        //     //     if(element.endorsement.endorser.includes(peer0Org1))
+        //     //     {
+        //     //         list.push('peer0.org1');
+        //     //         ++peer0Org1Count
+        //     //     }
+        //     //     if(element.endorsement.endorser.includes(peer1Org1))
+        //     //     {
+        //     //         list.push('peer1.org1');
+        //     //         ++peer1Org1Count;
+        //     //     }
+        //     //     if(element.endorsement.endorser.includes(peer2Org1))
+        //     //     {
+        //     //         list.push('peer2.org1');
+        //     //         ++peer2Org1Count;
+        //     //     }
+        //     //     if(element.endorsement.endorser.includes(peer3Org1))
+        //     //     {
+        //     //         list.push('peer3.org1');
+        //     //         ++peer3Org1Count;
+        //     //     }
+
+        //     //     if(element.endorsement.endorser.includes(peer0Org2))
+        //     //     {
+        //     //         list.push('peer0.org2');
+        //     //         ++peer0Org2Count;
+        //     //     }
+
+        //     //     if(element.endorsement.endorser.includes(peer1Org2))
+        //     //     {
+        //     //         list.push('peer1.org2');
+        //     //         ++peer1Org2Count;
+        //     //     }
+
+        //     //     if(element.endorsement.endorser.includes(peer2Org2))
+        //     //     {
+        //     //         list.push('peer2.org2');
+        //     //         ++peer2Org2Count;
+        //     //     }
+        //     //     if(element.endorsement.endorser.includes(peer3Org2))
+        //     //     {
+        //     //         list.push('peer3.org2');
+        //     //         ++peer3Org2Count;
+        //     //     }
+
+
+
+        //     //     if(element.endorsement.endorser.includes(peer0Org3))
+        //     //     {
+        //     //         list.push('peer0.org3');
+        //     //         ++peer0Org3Count;
+        //     //     }
+
+        //     //     if(element.endorsement.endorser.includes(peer1Org3))
+        //     //     {
+        //     //         list.push('peer1.org3');
+        //     //         ++peer1Org3Count;
+        //     //     }
+
+        //     //     if(element.endorsement.endorser.includes(peer2Org3))
+        //     //     {
+        //     //         list.push('peer2.org3');
+        //     //         ++peer2Org3Count;
+        //     //     }
+        //     //     if(element.endorsement.endorser.includes(peer3Org3))
+        //     //     {
+        //     //         list.push('peer3.org3');
+
+        //     //         ++peer3Org3Count;
+        //     //     }
+
+
+
+        //     //     if(element.endorsement.endorser.includes(peer0Org4))
+        //     //     {
+        //     //         list.push('peer0.org4');
+        //     //         ++peer0Org4Count;
+        //     //     }
+
+        //     //     if(element.endorsement.endorser.includes(peer1Org4))
+        //     //     {
+        //     //         list.push('peer1.org4');
+        //     //         ++peer1Org4Count;
+        //     //     }
+
+        //     //     if(element.endorsement.endorser.includes(peer2Org4))
+        //     //     {
+        //     //         list.push('peer2.org4');
+        //     //         ++peer2Org4Count;
+        //     //     }
+        //     //     if(element.endorsement.endorser.includes(peer3Org4))
+        //     //     {
+        //     //         list.push('peer3.org4');
+        //     //         ++peer3Org4Count;
+        //     //     }
+
+
+
+        //     // })
+
+            
+        //     // const commit = endorsement.newCommit();
+            
+            
+        //     // const  commit_request = {
+        //     //   handler: handler,
+        //     //   requestTimeout: 60000
+        //     //   };
 
     
-            // commit.chaincodeId = 'healthwork';
-            // commit.build(new IdentityContext(userContext, network.getChannel().client), build_proposal_request);
-            // commit.sign(new IdentityContext(userContext, network.getChannel().client));
-            // await commit.send(commit_request);
+        //     // commit.chaincodeId = 'healthwork';
+        //     // commit.build(new IdentityContext(userContext, network.getChannel().client), build_proposal_request);
+        //     // commit.sign(new IdentityContext(userContext, network.getChannel().client));
+        //     // await commit.send(commit_request);
 
-            // policyToPeersMap[++counter] = list;
-            // console.log('list: ' + list);
+        //     // policyToPeersMap[++counter] = list;
+        //     // console.log('list: ' + list);
 
-            await contract2.submitTransaction('dischargeReport', 'pranay', 'pranay');
-            let transaction = contract2.createTransaction('dischargeReport')
-            
-        }
- 
-        // console.log('org1peer0 :' + peer0Org1Count);
+        //     await contract2.submitTransaction('dischargeReport', 'pranay', 'pranay');
+        //     let transaction = contract2.createTransaction('dischargeReport')
+        //     //let result3 = contract2.submitTransaction('getfunctionKey', '');
+        //     //console.log("result : " + (await result3).toJSON().signature.toString('base64'));
+        // }
+        
+        const identities =   (await identityService.getAll()).result;
+        
+        identities.forEach(element => {
+            console.log("Identity : " + element)
+        });
+        // console.log('org1peer0 :' + pee0Org1Count);
         // console.log('org2peer0 :' + peer0Org2Count);
         // console.log('org3peer0 :' + peer0Org3Count);
         // console.log('org4peer0 :' + peer0Org4Count);

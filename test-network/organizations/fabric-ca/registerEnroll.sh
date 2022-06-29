@@ -63,8 +63,9 @@ function createOrg1() {
 
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/config.yaml
   mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/plugins/CustomEndorsement.so
-  mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/plugins/plugin.so
+  mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config 
+  cp "$(find ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/keystore/priv_sk
   cp '/home/cps16/Documents/Medical_Records/config/core copy 2.yaml' ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config/core.yaml
 
 
@@ -75,8 +76,10 @@ function createOrg1() {
 
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/config.yaml
     mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/plugins/plugin.so
     mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+   
+  cp "$(find ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/keystore/priv_sk
   cp '/home/cps16/Documents/Medical_Records/config/core copy 3.yaml' ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config/core.yaml
 
 
@@ -87,8 +90,10 @@ function createOrg1() {
 
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/msp/config.yaml
     mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/plugins/plugin.so
     mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
+   
+  cp "$(find ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/msp/keystore/priv_sk
   cp '/home/cps16/Documents/Medical_Records/config/core copy 4.yaml' ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config/core.yaml
 
   infoln "Generating the peer3 msp"
@@ -98,13 +103,14 @@ function createOrg1() {
 
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/msp/config.yaml
     mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/plugins/plugin.so
     mkdir ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
+  cp "$(find ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/msp/keystore/priv_sk
   cp '/home/cps16/Documents/Medical_Records/config/core copy 5.yaml' ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config/core.yaml
 
   infoln "Generating the peer0-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-org1 -M ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls --enrollment.profile tls --csr.hosts peer0.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054  --caname ca-org1 -M ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls --enrollment.profile tls --csr.hosts peer0.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
@@ -122,7 +128,7 @@ function createOrg1() {
 
   infoln "Generating the peer1-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:7054 --caname ca-org1 -M ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls --enrollment.profile tls --csr.hosts peer1.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:7054  --caname ca-org1 -M ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls --enrollment.profile tls --csr.hosts peer1.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
@@ -140,7 +146,7 @@ function createOrg1() {
 
   infoln "Generating the peer2-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:7054 --caname ca-org1 -M ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/tls --enrollment.profile tls --csr.hosts peer2.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:7054 --caname ca-org1  -M ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/tls --enrollment.profile tls --csr.hosts peer2.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/tls/ca.crt
@@ -158,7 +164,7 @@ function createOrg1() {
 
   infoln "Generating the peer3-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer3:peer3pw@localhost:7054 --caname ca-org1 -M ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/tls --enrollment.profile tls --csr.hosts peer3.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  fabric-ca-client enroll -u https://peer3:peer3pw@localhost:7054  --caname ca-org1 -M ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/tls --enrollment.profile tls --csr.hosts peer3.org1.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/tls/ca.crt
@@ -252,7 +258,10 @@ function createOrg2() {
 
   cp ${PWD}/organizations/peerOrganizations/org2.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/config.yaml
   mkdir ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/plugins/plugin.so
+   
+  cp "$(find ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/keystore/priv_sk
+
 
   infoln "Generating the peer1 msp"
   set -x
@@ -261,8 +270,10 @@ function createOrg2() {
 
   cp ${PWD}/organizations/peerOrganizations/org2.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/config.yaml
   mkdir ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/plugins/plugin.so
    
+  cp "$(find ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/keystore/priv_sk
+
   infoln "Generating the peer2 msp"
   set -x
   fabric-ca-client enroll -u https://peer2:peer2pw@localhost:8054 --caname ca-org2 -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/msp --csr.hosts peer2.org2.example.com --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
@@ -270,8 +281,10 @@ function createOrg2() {
 
   cp ${PWD}/organizations/peerOrganizations/org2.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/msp/config.yaml
   mkdir ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/plugins/CustomEndorsement.so
-   
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/plugins/plugin.so
+  
+  cp "$(find ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/msp/keystore/priv_sk
+
   infoln "Generating the peer3 msp"
   set -x
   fabric-ca-client enroll -u https://peer3:peer3pw@localhost:8054 --caname ca-org2 -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/msp --csr.hosts peer3.org2.example.com --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
@@ -279,11 +292,13 @@ function createOrg2() {
 
   cp ${PWD}/organizations/peerOrganizations/org2.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/msp/config.yaml
   mkdir ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/plugins/plugin.so
+   
+  cp "$(find ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/msp/keystore/priv_sk
 
   infoln "Generating the peer0-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:8054 --caname ca-org2 -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls --enrollment.profile tls --csr.hosts peer0.org2.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:8054 --caname ca-org2  -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls --enrollment.profile tls --csr.hosts peer0.org2.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
@@ -301,7 +316,7 @@ function createOrg2() {
 
   infoln "Generating the peer1-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:8054 --caname ca-org2 -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls --enrollment.profile tls --csr.hosts peer1.org2.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
+  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:8054 --caname ca-org2  -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls --enrollment.profile tls --csr.hosts peer1.org2.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt
@@ -319,7 +334,7 @@ function createOrg2() {
 
   infoln "Generating the peer2-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:8054 --caname ca-org2 -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/tls --enrollment.profile tls --csr.hosts peer2.org2.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
+  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:8054  --caname ca-org2 -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/tls --enrollment.profile tls --csr.hosts peer2.org2.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer2.org2.example.com/tls/ca.crt
@@ -337,7 +352,7 @@ function createOrg2() {
 
   infoln "Generating the peer3-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer3:peer3pw@localhost:8054 --caname ca-org2 -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/tls --enrollment.profile tls --csr.hosts peer3.org2.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
+  fabric-ca-client enroll -u https://peer3:peer3pw@localhost:8054 --caname ca-org2  -M ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/tls --enrollment.profile tls --csr.hosts peer3.org2.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer3.org2.example.com/tls/ca.crt
@@ -432,7 +447,9 @@ function createOrg3() {
 
   cp ${PWD}/organizations/peerOrganizations/org3.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp/config.yaml
     mkdir ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/plugins/plugin.so
+  
+  cp "$(find ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp/keystore/priv_sk
 
   infoln "Generating the peer1 msp"
   set -x
@@ -441,8 +458,9 @@ function createOrg3() {
 
   cp ${PWD}/organizations/peerOrganizations/org3.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/msp/config.yaml
       mkdir ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/plugins/CustomEndorsement.so
-
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/plugins/plugin.so
+ cp $(find ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/msp/keystore -name "*_sk") ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/msp/keystore/priv_sk
+  
   infoln "Generating the peer2 msp"
   set -x
   fabric-ca-client enroll -u https://peer2:peer2pw@localhost:10054 --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/msp --csr.hosts peer2.org3.example.com --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
@@ -450,7 +468,8 @@ function createOrg3() {
 
   cp ${PWD}/organizations/peerOrganizations/org3.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/msp/config.yaml
       mkdir ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/plugins/plugin.so
+  cp "$(find ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/msp/keystore/priv_sk
 
   infoln "Generating the peer3 msp"
   set -x
@@ -459,11 +478,13 @@ function createOrg3() {
 
   cp ${PWD}/organizations/peerOrganizations/org3.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/msp/config.yaml
       mkdir ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/plugins/CustomEndorsement.so
-
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/plugins/plugin.so
+   
+  cp "$(find ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/msp/keystore/priv_sk
+  
   infoln "Generating the peer0-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:10054 --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls --enrollment.profile tls --csr.hosts peer0.org3.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:10054  --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls --enrollment.profile tls --csr.hosts peer0.org3.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
@@ -481,7 +502,7 @@ function createOrg3() {
 
   infoln "Generating the peer1-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:10054 --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/tls --enrollment.profile tls --csr.hosts peer1.org3.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
+  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:10054  --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/tls --enrollment.profile tls --csr.hosts peer1.org3.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/tls/ca.crt
@@ -499,7 +520,7 @@ function createOrg3() {
 
   infoln "Generating the peer2-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:10054 --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/tls --enrollment.profile tls --csr.hosts peer2.org3.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
+  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:10054  --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/tls --enrollment.profile tls --csr.hosts peer2.org3.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer2.org3.example.com/tls/ca.crt
@@ -517,7 +538,7 @@ function createOrg3() {
 
    infoln "Generating the peer3-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer3:peer3pw@localhost:10054 --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/tls --enrollment.profile tls --csr.hosts peer3.org3.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
+  fabric-ca-client enroll -u https://peer3:peer3pw@localhost:10054 --caname ca-org3  -M ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/tls --enrollment.profile tls --csr.hosts peer3.org3.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer3.org3.example.com/tls/ca.crt
@@ -610,7 +631,8 @@ function createOrg4() {
 
   cp ${PWD}/organizations/peerOrganizations/org4.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/msp/config.yaml
       mkdir ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org4.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org4.example.com/plugins/plugin.so
+  cp "$(find ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/msp/keystore/priv_sk
 
   infoln "Generating the peer1 msp"
   set -x
@@ -619,8 +641,10 @@ function createOrg4() {
 
   cp ${PWD}/organizations/peerOrganizations/org4.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/msp/config.yaml
         mkdir ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/plugins/plugin.so
 
+  cp "$(find ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/msp/keystore/priv_sk
+  
   infoln "Generating the peer2 msp"
   set -x
   fabric-ca-client enroll -u https://peer2:peer2pw@localhost:11054 --caname ca-org4 -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/msp --csr.hosts peer2.org4.example.com --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
@@ -628,7 +652,8 @@ function createOrg4() {
 
   cp ${PWD}/organizations/peerOrganizations/org4.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/msp/config.yaml
         mkdir ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/plugins/CustomEndorsement.so
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/plugins/plugin.so
+  cp "$(find ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/msp/keystore/priv_sk
 
   infoln "Generating the peer3 msp"
   set -x
@@ -636,12 +661,13 @@ function createOrg4() {
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org4.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/msp/config.yaml
-        mkdir ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/plugins
-  cp /home/cps16/Documents/go-plugin-fabric/CustomEndorsement.so ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/plugins/CustomEndorsement.so
+  mkdir ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/plugins
+  cp /home/cps16/Documents/go-plugin-fabric/plugin.so ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/plugins/plugin.so
+  cp "$(find ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/msp/keystore -name "*_sk")" ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/msp/keystore/priv_sk
 
   infoln "Generating the peer0-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:11054 --caname ca-org4 -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls --enrollment.profile tls --csr.hosts peer0.org4.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:11054  --caname ca-org4 -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls --enrollment.profile tls --csr.hosts peer0.org4.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/ca.crt
@@ -659,7 +685,7 @@ function createOrg4() {
 
   infoln "Generating the peer1-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:11054 --caname ca-org4 -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/tls --enrollment.profile tls --csr.hosts peer1.org4.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
+  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:11054 --caname ca-org4  -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/tls --enrollment.profile tls --csr.hosts peer1.org4.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/tls/ca.crt
@@ -677,7 +703,7 @@ function createOrg4() {
 
   infoln "Generating the peer2-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:11054 --caname ca-org4 -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/tls --enrollment.profile tls --csr.hosts peer2.org4.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
+  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:11054  --caname ca-org4 -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/tls --enrollment.profile tls --csr.hosts peer2.org4.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer2.org4.example.com/tls/ca.crt
@@ -695,7 +721,7 @@ function createOrg4() {
 
   infoln "Generating the peer3-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://peer3:peer3pw@localhost:11054 --caname ca-org4 -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/tls --enrollment.profile tls --csr.hosts peer3.org4.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
+  fabric-ca-client enroll -u https://peer3:peer3pw@localhost:11054 --caname ca-org4  -M ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/tls --enrollment.profile tls --csr.hosts peer3.org4.example.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/org4/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer3.org4.example.com/tls/ca.crt

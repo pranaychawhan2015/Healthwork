@@ -24,6 +24,10 @@ peers:
     grpcOptions:
       ssl-target-name-override: peer0.org${ORG}.example.com
       hostnameOverride: peer0.org${ORG}.example.com
+    signCert: |
+          ${CERT0}
+    privateKey: |
+          ${KEY0}
   peer1.org${ORG}.example.com:
     url: grpcs://localhost:${P1PORT}
     tlsCACerts:
@@ -32,6 +36,10 @@ peers:
     grpcOptions:
       ssl-target-name-override: peer1.org${ORG}.example.com
       hostnameOverride: peer1.org${ORG}.example.com
+    signCert: |
+          ${CERT1}
+    privateKey: |
+          ${KEY1}
 certificateAuthorities:
   ca.org${ORG}.example.com:
     url: https://localhost:${CAPORT}

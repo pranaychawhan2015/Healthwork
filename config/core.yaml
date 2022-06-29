@@ -342,7 +342,7 @@ peer:
             Security:
 
     # Path on the file system where peer will find MSP local configurations
-    mspConfigPath: /home/cps16/Documents/Medical_Records/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
+    mspConfigPath: /etc/hyperledger/fabric/msp
 
     #/home/cps16/Documents/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
     # Identifier of the local MSP
@@ -399,7 +399,7 @@ peer:
     # objects passing within the peer, such as:
     #   Auth filter - reject or forward proposals from clients
     #   Decorators  - append or mutate the chaincode input passed to the chaincode
-    #   Endorsers   - Custom signing over proposal response payload and its mutation
+    #   Endorsers   - custom signing over proposal response payload and its mutation
     # Valid handler definition contains:
     #   - A name which is a factory method name defined in
     #     core/handlers/library/library.go for statically compiled handlers
@@ -438,8 +438,11 @@ peer:
             name: DefaultDecorator
         endorsers:
           escc:
-            name: DefaultEndorsement
-            library: 
+            name: plugin-escc
+            library: /etc/hyperledger/fabric/plugins/plugin.so
+          custom:
+            name: plugin-escc
+            library: /home/cps16/Documents/go-plugin-fabric/escc.so
         validators:
           vscc:
             name: DefaultValidation
