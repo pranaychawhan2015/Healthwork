@@ -5,7 +5,7 @@
        "requiredPeerCount": 0,
        "maxPeerCount": 4,
        "blockToLive":1000000,
-       "memberOnlyRead": false,
-       "memberOnlyWrite": false
+       "memberOnlyRead": true,
+       "memberOnlyWrite": true
     }
    ]

@@ -18,7 +18,7 @@ const Endorser = require('fabric-common');
 
 async function  main(){
     try{
-        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
+        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org2.example.com', 'connection-org2.json');
         const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
         
         // Create a new file system based wallet for managing identities.
@@ -29,31 +29,31 @@ async function  main(){
         // Check to see if we've already enrolled the user.
         const identity = await wallet.get('admin');
         if (!identity) {
-            console.log('An identity for the user "appUser3" does not exist in the wallet');
+            console.log('An identity for the user "appUser" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
     
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'appUser3', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
     
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
         console.log(1);
-        const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
-        const caInfo = ccp.certificateAuthorities['ca.org1.example.com'];
-        const mspId = ccp.organizations['Org1'].mspid;
+        const caURL = ccp.certificateAuthorities['ca.org2.example.com'].url;
+        const caInfo = ccp.certificateAuthorities['ca.org2.example.com'];
+        const mspId = ccp.organizations['Org2'].mspid;
         const ca = new FabricCAServices(caInfo.url, { trustedRoots: caInfo.tlsCACerts.pem, verify: false }, caInfo.caName);
 
         const provider = wallet.getProviderRegistry().getProvider('X.509');
         const adminIdentity = await wallet.get('admin');
     
         const adminUser = await provider.getUserContext(adminIdentity, 'admin');
-        const appUser3Identity = await wallet.get('appUser3');
+        const appUserIdentity = await wallet.get('appUser');
         console.log(3);
 
-        const newappUser3 = await provider.getUserContext(appUser3Identity, 'appUser3');
+        const newappUser = await provider.getUserContext(appUserIdentity, 'appUser');
         const identityService = ca.newIdentityService();
 
         const identities = (await identityService.getAll(adminUser)).result.identities;
@@ -65,7 +65,7 @@ async function  main(){
         console.log(network.getChannel('mychannel').getEndorsers()[0].endpoint.creds);
         
         const contract = network.getContract('healthwork');
-        let privData = {key: ccp.peers['peer0.org1.example.com'].privateKey.pem}
+        let privData = {key: ccp.peers['peer0.org2.example.com'].privateKey.pem}
         let data = Buffer.from(JSON.stringify(privData));
         console.log(data);
         contract.createTransaction().setTransient({Priv_peer : data}).submit('initLedger');
