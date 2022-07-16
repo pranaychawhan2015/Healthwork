@@ -19,8 +19,11 @@ const { TransactionEventStrategy } = require('fabric-network/lib/impl/event/tran
 
 const {Network} = require('fabric-network');
 const {DiscoveryService, IdentityContext, Client, Discoverer} = require('fabric-common');
-const {couchdb} = require('couchdb');
+//const {couchdb} = require('couchdb');
 const { publicEncrypt } = require('crypto');
+const e = require('express');
+const elliptic = require('elliptic');
+const { KEYUTIL } = require('jsrsasign');
 
 //const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
 //const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
@@ -78,22 +81,22 @@ class SampleQueryHandler  {
  }
 }
 
-function createQueryHandler(network) {
- //const mspId = network.getGateway().getIdentity().mspId;
- const channel = network.getChannel('mychannel');
- const orgPeers = channel.getEndorsers('Org1MSP');
- //const otherPeers = channel.getEndorsers().filter((peer) => !orgPeers.includes(peer));
- //const allPeers = orgPeers.concat(otherPeers);
- return new SampleQueryHandler(orgPeers);
-};
+// function createQueryHandler(network) {
+//  //const mspId = network.getGateway().getIdentity().mspId;
+//  const channel = network.getChannel('mychannel');
+//  const orgPeers = channel.getEndorsers('Org1MSP');
+//  //const otherPeers = channel.getEndorsers().filter((peer) => !orgPeers.includes(peer));
+//  //const allPeers = orgPeers.concat(otherPeers);
+//  return new SampleQueryHandler(orgPeers);
+// };
 
 
-const connectOptions =  {
-  query: {
-      timeout: 3, // timeout in seconds (optional will default to 3)
-      strategy: createQueryHandler
-  }
-}
+// const connectOptions =  {
+//   query: {
+//       timeout: 3, // timeout in seconds (optional will default to 3)
+//       strategy: createQueryHandler
+//   }
+// }
 
 
 
@@ -124,7 +127,7 @@ app.get('/patients', async (req, res) => {
     
     await RegisterAdmins(wallet);
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } }, connectOptions);
+    await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
     const network = await gateway.getNetwork('mychannel');
 
     const contract = network.getContract('healthwork');
@@ -162,15 +165,15 @@ app.get('/patients/:email', async (req, res) => {
     if(isvalid)
     {
       const gateway = new Gateway();
-      await gateway.connect(peerCCP, { wallet, identity: req.params.email, discovery: { enabled: true, asLocalhost: true } }, connectOptions);
+      await gateway.connect(peerCCP, { wallet, identity: req.params.email, discovery: { enabled: true, asLocalhost: true } });
       const network = await gateway.getNetwork('mychannel');
       //console.log(5);
       const contract = network.getContract('healthwork');
       const result = await contract.evaluateTransaction('queryPatient', req.params.email);
       console.log(result.toString());
 
-      const contract2 = network.getContract('connectionLayer4');
-      const result2 = await contract2.submitTransaction('Invoke', 'healthwork', req.params.email);
+      //const contract2 = network.getContract('connectionLayer4');
+      //const result2 = await contract2.submitTransaction('Invoke', 'healthwork', req.params.email);
       console.log('result:' + result2.toString());
 
       res.json({status: true, patient: JSON.parse(result.toString())});
@@ -188,11 +191,14 @@ app.post('/patients', async (req, res) => {
   if ((typeof req.body.key === 'undefined' || req.body.key === '') ||
       (typeof req.body.name === 'undefined' || req.body.name === '') ||
       (typeof req.body.age === 'undefined' || req.body.age === '') ||
-      (typeof req.body.disease === 'undefined' || req.body.disease === '') ||
-      (typeof req.body.specialization === 'undefined' || req.body.specialization === '') ||
+      //(typeof req.body. === 'undefined' || req.body.disease === '') ||
+      //(typeof req.body.specialization === 'undefined' || req.body.specialization === '') ||
       (typeof req.body.email === 'undefined' || req.body.email === '') ||
       (typeof req.body.password === 'undefined' || req.body.password === '') 
-      )
+      (typeof req.body.el === 'undefined' || req.body.el === '') ||
+      (typeof req.body.departments === 'undefined' || req.body.departments === null) ||
+      (typeof req.body.doctors === 'undefined' || req.body.doctors === null) ||
+      (typeof req.body.symptoms === 'undefined' || req.body.symptoms === null))
        {
     res.json({status: false, error: {message: 'Missing body.'}});
     return;
@@ -213,17 +219,140 @@ app.post('/patients', async (req, res) => {
     }
     else
     {
-       userCCP = await Register(wallet, req.body.email, req.body.password, req.body.key, req.body.name, req.body.age, req.body.specialization, req.body.disease);
+       userCCP = await Register(wallet, req.body.email, req.body.password, req.body.key, req.body.name, req.body.age, req.body.departments, req.body.doctors, req.body.symptoms, req.body.el);
     }
     console.log(userCCP);
     const gateway = new Gateway();
-    await gateway.connect(userCCP, { wallet, identity: req.body.email, discovery: { enabled: true, asLocalhost: true } }, connectOptions);
+    await gateway.connect(userCCP, { wallet, identity: req.body.email, discovery: { enabled: true, asLocalhost: true } });
     const network = await gateway.getNetwork('mychannel');
     const contract = network.getContract('healthwork');
 
     console.log(5);
-    console.log(req.body.specialization);
-    await contract.submitTransaction('createPatient',req.body.key, req.body.name, req.body.age, req.body.specialization, req.body.disease, req.body.email,req.body.adhar, caName);
+    console.log(req.body.departments);
+    let endorsers =  await getEndorsers(wallet, req.body.departments, req.body.doctors, symptom, network.getChannel().getEndorsers());
+    //await contract.submitTransaction('createPatient',req.body.key, req.body.name, req.body.age, req.body.departments, req.body.symptoms, req.body.email,req.body.adhar, caName, req.body.el);
+    let ccps = []
+    endorsers.forEach(endorser=>{
+      if(endorser.name.contains('org1'))
+      {
+        if(endorser.name.contains('peer0.org1.example.com'))
+        {
+          ccps.push(ccp.peers['peer0.org1.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer1.org1.example.com'))
+        {
+          ccps.push(ccp.peers['peer1.org1.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer2.org1.example.com'))
+        {
+          ccps.push(ccp.peers['peer2.org1.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer3.org1.example.com'))
+        {
+          ccps.push(ccp.peers['peer3.org1.example.com'].privateKey.pem)
+        }
+      }
+      if(endorser.name.contains('org2'))
+      {
+        if(endorser.name.contains('peer0.org2.example.com'))
+        {
+          ccps.push(ccp2.peers['peer0.org2.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer1.org2.example.com'))
+        {
+          ccps.push(ccp2.peers['peer1.org2.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer2.org2.example.com'))
+        {
+          ccps.push(ccp2.peers['peer2.org2.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer3.org2.example.com'))
+        {
+          ccps.push(ccp2.peers['peer3.org2.example.com'].privateKey.pem)
+        }
+      }
+      
+      if(endorser.name.contains('org3'))
+      {
+        if(endorser.name.contains('peer0.org3.example.com'))
+        {
+          ccps.push(ccp3.peers['peer0.org3.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer1.org3.example.com'))
+        {
+          ccps.push(ccp3.peers['peer1.org3.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer2.org3.example.com'))
+        {
+          ccps.push(ccp3.peers['peer2.org3.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer3.org3.example.com'))
+        {
+          ccps.push(ccp3.peers['peer3.org3.example.com'].privateKey.pem)
+        }
+      }
+      if(endorser.name.contains('org4'))
+      {
+        if(endorser.name.contains('peer0.org4.example.com'))
+        {
+          ccps.push(ccp4.peers['peer0.org4.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer1.org4.example.com'))
+        {
+          ccps.push(ccp4.peers['peer1.org4.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer2.org4.example.com'))
+        {
+          ccps.push(ccp4.peers['peer2.org4.example.com'].privateKey.pem)
+        }
+        if(endorser.name.contains('peer3.org4.example.com'))
+        {
+          ccps.push(ccp4.peers['peer3.org4.example.com'].privateKey.pem)
+        }
+      }
+    })
+
+    let privData = {priv_peer: ccps}
+    let data = Buffer.from(JSON.stringify(privData));
+
+
+    //Sign the transaction
+    var msg = "hello world!"
+    const {prvKeyHex} = KEYUTIL.getKey(userExists.credentials.privateKey)  
+          console.log(2);
+
+          const {pubKeyHex} = KEYUTIL.getKey(userExists.credentials.certificate)
+          console.log(3);
+
+          let digest = crypto.createHash('sha256').update(msg).digest("hex")
+          console.log(digest);
+
+          const EC = elliptic.ec;
+          console.log(5);
+
+          const ecdsaCurve = elliptic.curves['p256'];
+          console.log(6);
+
+          const ecdsa = new EC(ecdsaCurve);
+          console.log(7);
+
+          const signKey = ecdsa.keyFromPrivate(prvKeyHex, 'hex');
+          console.log(8);
+
+          const sig = ecdsa.sign(Buffer.from(digest, 'hex'), signKey);
+          console.log(9);
+
+          const signature = Buffer.from(sig.toDER())
+          console.log(sig);
+
+          const veriifyKey = ecdsa.keyFromPublic(pubKeyHex, 'hex');
+          console.log(veriifyKey.getPublic().getX().toString('hex'));
+
+          let message = Buffer.from(JSON.stringify({msg: digest}))
+          //let signatureJSON = Buffer.from(JSON.stringify({signature : Buffer.from(signature)}))
+          let signatureJSON = Buffer.from(JSON.stringify({sigr : sig.r.toString(), sigs: sig.s.toString(), pub_x: veriifyKey.getPublic().getX().toString('hex'), pub_y: veriifyKey.getPublic().getY().toString('hex')}))
+          let transaction = contract.createTransaction('createPatient');
+          transaction.setEndorsingPeers(endorsers).submit(req.body.key, req.body.name, req.body.age ,req.body.departments, req.body.symptoms, req.body.email, req.body.adhar, req.body.el, data, signatureJSON, message)
     console.log(6);
     res.json({status: true, message: 'Transaction (create patient) has been submitted.'})
   } catch (err) {
@@ -248,19 +377,19 @@ app.put('/patients', async (req, res) => {
     const Organization = req.body.patient.Organization;
     if(Organization == 'ca-org1')
     {
-      await gateway.connect(ccp, { wallet, identity: req.body.patient.Email, discovery: { enabled: true, asLocalhost: true } }, connectOptions);
+      await gateway.connect(ccp, { wallet, identity: req.body.patient.Email, discovery: { enabled: true, asLocalhost: true } });
     }
     else if(Organization== 'ca-org2')
     {
-      await gateway.connect(ccp2, { wallet, identity: req.body.patient.Email, discovery: { enabled: true, asLocalhost: true } }, connectOptions);
+      await gateway.connect(ccp2, { wallet, identity: req.body.patient.Email, discovery: { enabled: true, asLocalhost: true } });
     }
     else if(Organization == 'ca-org3')
     {
-      await gateway.connect(ccp3, { wallet, identity: req.body.patient.Email, discovery: { enabled: true, asLocalhost: true } }, connectOptions);
+      await gateway.connect(ccp3, { wallet, identity: req.body.patient.Email, discovery: { enabled: true, asLocalhost: true } });
     }
     else if(Organization == 'ca-org4')
     {
-      await gateway.connect(ccp4, { wallet, identity: req.body.patient.Email, discovery: { enabled: true, asLocalhost: true } }, connectOptions);
+      await gateway.connect(ccp4, { wallet, identity: req.body.patient.Email, discovery: { enabled: true, asLocalhost: true } });
     }
     
     const network = await gateway.getNetwork('mychannel');
@@ -354,6 +483,98 @@ app.put('/patients', async (req, res) => {
     res.json({status: false, error: err});
   }
 });
+
+app.get('/doctors/:symptoms/', async (req,res) =>{
+  try{
+    const walletPath = path.join(process.cwd(), 'wallet');
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+    const userExists = await wallet.get('admin');
+    if (!userExists) {
+      res.json({status: false, error: {message: 'User not exist in the wallet'}});
+      return;
+    }
+    await RegisterAdmins(wallet);
+  
+    const gateway = new Gateway();
+    await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: true, asLocalhost: true } });
+    const network = await gateway.getNetwork('mychannel');
+    //console.log(5);
+    const contract = network.getContract('healthwork');
+    const result = await contract.evaluateTransaction('queryAllDoctorsForThisSymptom', req.params.symptoms);
+    res.json({status: true, message: 'Doctors Data fetched',data: JSON.parse(result.toString())})
+    
+    gateway.disconnect();
+  }catch(err)
+  {
+    res.json({status: false, error: err});
+  }
+
+})
+
+
+async function getEndorsers(wallet, departments, doctors, symptom, peers)
+{
+  let caOrg = null
+  //let thisMSPID = null
+  let endorsers = []
+
+  departments.forEach(department =>{
+    if (ca.getCaName() == department){
+      caOrg = ca;
+      thisMSPID = mspId;
+    }
+    if (ca2.getCaName() === department){
+      caOrg = ca2;
+      thisMSPID = mspId2;
+    }
+    if(ca3.getCaName() === department){
+      caOrg = ca3;
+      thisMSPID = mspId3;
+    }
+    if(ca4.getCaName() === department)
+    {
+      caOrg = ca4;
+      thisMSPID = mspId4;
+    }
+    const provider = wallet.getProviderRegistry().getProvider('X.509');
+    let adminIdentity = await wallet.get(caOrg.getCaName());
+    const adminUser = await provider.getUserContext(adminIdentity, caOrg.getCaName());
+    const identityService = caOrg.newIdentityService();
+    const identities = await (await identityService.getAll(adminUser)).result.identities;
+    identities.forEach(function(e){
+      let counterForOrg = 0;
+      let counterForDoctorName = 0;
+      let counterForSymptom = 0;
+      let peerName = "";
+      e.attrs.forEach(attribute=>{
+        if(departments.contains(attribute.value))
+        {
+          ++counterForOrg;
+        }
+        if(doctors.contains(attribute.value)){
+          ++counterForSymptom;
+        }
+        if(attribute.value === symptom){
+          ++counterForDoctorName;
+        }
+        if(attribute.name === "Email"){
+          peerName = attribute.value;
+        }
+      })
+
+      if(counterForOrg != 0 || counterForSymptom != 0 || counterForDoctorName != 0)
+      {
+        peers.filter(element => {
+          if(element.name.startsWith(peerName))
+          {
+            endorsers.push(element);
+          }
+          });
+      }
+    })
+  })
+return endorsers;
+}
 
 
 async function GetNames(wallet, policy, specialization, ca, mspId, endorsers, peers)
@@ -477,191 +698,54 @@ return endorsers;
 }
 
 
-async function Register(wallet, email, password, key, name, age, specialization, disease )
+async function Register(wallet, email, password, key, name, age, departments,doctors,symptoms,el)
 { 
     const provider = wallet.getProviderRegistry().getProvider('X.509');
-    let adminIdentity = await wallet.get(ca.getCaName());
+    let adminIdentity = await wallet.get(departments[0]);
+    let caOrg = null;
+    let thisMSPID = null;
     if(adminIdentity == null)
     {
-      const enrollment = await ca.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
+      if(ca.getCaName() == departments[0])
+      {
+        caOrg = ca
+        thisMSPID = mspId
+      }
+      if(ca2.getCaName() == departments[0])
+      {
+        caOrg = ca2
+        thisMSPID = mspId2
+      }
+      
+      if(ca.getCaName() == departments[0])
+      {
+        caOrg = ca3
+        thisMSPID = mspId3
+      }
+      
+      if(ca3.getCaName() == departments[0])
+      {
+        caOrg = ca4
+        thisMSPID = mspId4
+      }
+      
+
+      const enrollment = await caOrg.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
       const x509Identity = {
       credentials: {
       certificate: enrollment.certificate,
       privateKey: enrollment.key.toBytes(),
       },
-      mspId: mspId,
+      mspId: thisMSPID,
       type: 'X.509',
       };
-      await wallet.put(ca.getCaName(), x509Identity);
-      adminIdentity = await wallet.get(ca.getCaName());
-  }
-
-  let orgFound = false;
-  let caOrg = null;
-  let adminUser = await provider.getUserContext(adminIdentity, 'admin');
-  let identityService = ca.newIdentityService();
-  let identities = await (await identityService.getAll(adminUser)).result.identities;
-
-  console.log(identities);
-  identities.forEach(element=> 
-  {
-    let attrs = [];
-    console.log(element.attrs);
-    const result = element.attrs.filter(function(d)
-    {
-        if(d.value == specialization)
-        {
-          return true;
-        }
-    });
-
-    if(result != null)
-    {
-      orgFound = true;
-      caOrg = ca;
+      await wallet.put(caOrg.getCaName(), x509Identity);
+      adminIdentity = await wallet.get(caOrg.getCaName());
     }
-  }
-)
 
-if(orgFound == false)
-{
-  adminIdentity = await wallet.get(ca2.getCaName());
-  if(adminIdentity == null)
-  {
-    const enrollment = await ca2.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
-    const x509Identity = {
-    credentials: {
-    certificate: enrollment.certificate,
-    privateKey: enrollment.key.toBytes(),
-    },
-    mspId: mspId2,
-    type: 'X.509',
-    };
-    await wallet.put(ca2.getCaName(), x509Identity);
-    adminIdentity = await wallet.get(ca2.getCaName());
-}
-
-adminUser = await provider.getUserContext(adminIdentity, 'admin');
-identityService = ca2.newIdentityService();
-identities = await (await identityService.getAll(adminUser)).result.identities;
-
-
-identities.forEach(element=> 
-{
-  let attrs = [];
-
-  console.log(element.attrs);
-  const result = element.attrs.filter(function(d)
-  {
-      if(d.value == specialization)
-      {
-        return true;
-      }
-  });
-
-  if(result != null)
-  {
-    orgFound = true;
-    caOrg = ca2;
-    console.log(result);
-  }
-
-})
-
-}
-
-if(orgFound == false)
-{
-  adminIdentity = await wallet.get(ca3.getCaName());
-  if(adminIdentity == null)
-  {
-    const enrollment = await ca3.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
-    const x509Identity = {
-    credentials: {
-    certificate: enrollment.certificate,
-    privateKey: enrollment.key.toBytes(),
-    },
-    mspId: mspId3,
-    type: 'X.509',
-    };
-    await wallet.put(ca3.getCaName(), x509Identity);
-    adminIdentity = await wallet.get(ca3.getCaName());
-}
-
- adminUser = await provider.getUserContext(adminIdentity, 'admin');
- identityService = ca3.newIdentityService();
- identities = await (await identityService.getAll(adminUser)).result.identities;
-
-identities.forEach(element=> 
-{
-  let attrs = [];
-  const result = element.attrs.filter(function(d)
-  {
-      if(d.value == specialization)
-      {
-        return true;
-      }
-  });
-
-  if(result != null)
-  {
-    orgFound = true;
-    caOrg = ca3;
-    console.log(result);
-  }
-
-})
-
-
-}
-
-if(orgFound == false)
-{
-
-  adminIdentity = await wallet.get(ca4.getCaName());
-  if(adminIdentity == null)
-  {
-    const enrollment = await ca4.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
-    const x509Identity = {
-    credentials: {
-    certificate: enrollment.certificate,
-    privateKey: enrollment.key.toBytes(),
-    },
-    mspId: mspId4,
-    type: 'X.509',
-    };
-    await wallet.put(ca4.getCaName(), x509Identity);
-    adminIdentity = await wallet.get(ca4.getCaName());
-}
-
-adminUser = await provider.getUserContext(adminIdentity, 'admin');
-identityService = ca4.newIdentityService();
-identities = await (await identityService.getAll(adminUser)).result.identities;
-
-identities.forEach(element=> 
-{
-  let attrs = [];
-  const result = element.attrs.filter(function(d)
-  {
-      if(d.value == specialization)
-      {
-        return true;
-      }
-  });
-
-  if(result != null)
-  {
-    orgFound = true;
-    caOrg = ca4;
-    console.log(result);
-  }
-
-})
-
-
-}
-
-console.log(orgFound);
+  // let orgFound = false;
+  let adminUser = await provider.getUserContext(adminIdentity, 'admin');
+  //console.log(orgFound);
 
 const secret = await caOrg.register({
   enrollmentID: email,
@@ -686,22 +770,206 @@ const x509Identity = {
 await wallet.put(email, x509Identity);
 
 caName = caOrg.getCaName();
-if(caOrg.getCaName() == ca.getCaName())
-{
-  return ccp;
-}
-if(caOrg.getCaName() == ca2.getCaName())
-{
-  return ccp2;
-}
-if(caOrg.getCaName() == ca3.getCaName())
-{
-  return ccp3;
-}
-if(caOrg.getCaName() == ca4.getCaName())
-{
-  return ccp4;
-}
+// if(caOrg.getCaName() == ca.getCaName())
+// {
+//   return ccp;
+// }
+// if(caOrg.getCaName() == ca2.getCaName())
+// {
+//   return ccp2;
+// }
+// if(caOrg.getCaName() == ca3.getCaName())
+// {
+//   return ccp3;
+// }
+// if(caOrg.getCaName() == ca4.getCaName())
+// {
+//   return ccp4;
+// }
+  
+  
+  //let identityService = ca.newIdentityService();
+  //let identities = await (await identityService.getAll(adminUser)).result.identities;
+
+  //console.log(identities);
+  // identities.forEach(element=> 
+  // {
+  //   let attrs = [];
+  //   console.log(element.attrs);
+  //   const result = element.attrs.filter(function(d)
+  //   {
+  //       if(d.value == specialization)
+  //       {
+  //         return true;
+  //       }
+  //   });
+
+  //   if(result != null)
+  //   { //let identityService = ca.newIdentityService();
+  //let identities = await (await identityService.getAll(adminUser)).result.identities;
+
+  //console.log(identities);
+  // identities.forEach(element=> 
+  // {
+  //   let attrs = [];
+  //   console.log(element.attrs);
+  //   const result = element.attrs.filter(function(d)
+  //   {
+  //       if(d.value == specialization)
+  //       {
+  //         return true;
+  //       }
+  //   });
+
+  //   if(result != null)
+  //   {
+  //     orgFound = true;
+  //     caOrg = ca;
+  //   }
+  //     orgFound = true;
+  //     caOrg = ca;
+  //   }
+  // }
+//)
+
+// if(orgFound == false)
+// {
+//   adminIdentity = await wallet.get(ca2.getCaName());
+//   if(adminIdentity == null)
+//   {
+//     const enrollment = await ca2.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
+//     const x509Identity = {
+//     credentials: {
+//     certificate: enrollment.certificate,
+//     privateKey: enrollment.key.toBytes(),
+//     },
+//     mspId: mspId2,
+//     type: 'X.509',
+//     };
+//     await wallet.put(ca2.getCaName(), x509Identity);
+//     adminIdentity = await wallet.get(ca2.getCaName());
+// }
+
+// adminUser = await provider.getUserContext(adminIdentity, 'admin');
+// identityService = ca2.newIdentityService();
+// identities = await (await identityService.getAll(adminUser)).result.identities;
+
+
+// identities.forEach(element=> 
+// {
+//   let attrs = [];
+
+//   console.log(element.attrs);
+//   const result = element.attrs.filter(function(d)
+//   {
+//       if(d.value == specialization)
+//       {
+//         return true;
+//       }
+//   });
+
+//   if(result != null)
+//   {
+//     orgFound = true;
+//     caOrg = ca2;
+//     console.log(result);
+//   }
+
+// })
+
+// }
+
+// if(orgFound == false)
+// {
+//   adminIdentity = await wallet.get(ca3.getCaName());
+//   if(adminIdentity == null)
+//   {
+//     const enrollment = await ca3.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
+//     const x509Identity = {
+//     credentials: {
+//     certificate: enrollment.certificate,
+//     privateKey: enrollment.key.toBytes(),
+//     },
+//     mspId: mspId3,
+//     type: 'X.509',
+//     };
+//     await wallet.put(ca3.getCaName(), x509Identity);
+//     adminIdentity = await wallet.get(ca3.getCaName());
+// }
+
+//  adminUser = await provider.getUserContext(adminIdentity, 'admin');
+//  identityService = ca3.newIdentityService();
+//  identities = await (await identityService.getAll(adminUser)).result.identities;
+
+// identities.forEach(element=> 
+// {
+//   let attrs = [];
+//   const result = element.attrs.filter(function(d)
+//   {
+//       if(d.value == specialization)
+//       {
+//         return true;
+//       }
+//   });
+
+//   if(result != null)
+//   {
+//     orgFound = true;
+//     caOrg = ca3;
+//     console.log(result);
+//   }
+
+// })
+
+
+// }
+
+// if(orgFound == false)
+// {
+
+//   adminIdentity = await wallet.get(ca4.getCaName());
+//   if(adminIdentity == null)
+//   {
+//     const enrollment = await ca4.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
+//     const x509Identity = {
+//     credentials: {
+//     certificate: enrollment.certificate,
+//     privateKey: enrollment.key.toBytes(),
+//     },
+//     mspId: mspId4,
+//     type: 'X.509',
+//     };
+//     await wallet.put(ca4.getCaName(), x509Identity);
+//     adminIdentity = await wallet.get(ca4.getCaName());
+// }
+
+// adminUser = await provider.getUserContext(adminIdentity, 'admin');
+// identityService = ca4.newIdentityService();
+// identities = await (await identityService.getAll(adminUser)).result.identities;
+
+// identities.forEach(element=> 
+// {
+//   let attrs = [];
+//   const result = element.attrs.filter(function(d)
+//   {
+//       if(d.value == specialization)
+//       {
+//         return true;
+//       }
+//   });
+
+//   if(result != null)
+//   {
+//     orgFound = true;
+//     caOrg = ca4;
+//     console.log(result);
+//   }
+
+// })
+
+
+// }
+
 
 }
 
@@ -741,37 +1009,44 @@ async function RegisterAdmins(wallet)
       adminIdentity = await wallet.get(ca2.getCaName());
     }
 
+  // if(ca3 != null || ca3 != 'undefined')
+  // {
     adminIdentity = await wallet.get(ca3.getCaName());
-  if(adminIdentity == null)
-  {
-    const enrollment = await ca3.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
-    const x509Identity = {
-    credentials: {
-    certificate: enrollment.certificate,
-    privateKey: enrollment.key.toBytes(),
-    },
-    mspId: mspId3,
-    type: 'X.509',
-    };
-    await wallet.put(ca3.getCaName(), x509Identity);
-    adminIdentity = await wallet.get(ca3.getCaName());  
-  }
+    if(adminIdentity == null)
+    {
+      const enrollment = await ca3.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
+      const x509Identity = {
+      credentials: {
+      certificate: enrollment.certificate,
+      privateKey: enrollment.key.toBytes(),
+      },
+      mspId: mspId3,
+      type: 'X.509',
+      };
+      await wallet.put(ca3.getCaName(), x509Identity);
+      adminIdentity = await wallet.get(ca3.getCaName());  
+    }
+  //}
 
-  adminIdentity = await wallet.get(ca4.getCaName());
-  if(adminIdentity == null)
-  {
-    const enrollment = await ca4.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
-    const x509Identity = {
-    credentials: {
-    certificate: enrollment.certificate,
-    privateKey: enrollment.key.toBytes(),
-    },
-    mspId: mspId4,
-    type: 'X.509',
-    };
-    await wallet.put(ca4.getCaName(), x509Identity);
+  // if(ca4 != null || ca4 != 'undefined')
+  // {
     adminIdentity = await wallet.get(ca4.getCaName());
-}
+    if(adminIdentity == null)
+    {
+      const enrollment = await ca4.enroll({ enrollmentID:'admin',enrollmentSecret:'adminpw', ecert:true});
+      const x509Identity = {
+      credentials: {
+      certificate: enrollment.certificate,
+      privateKey: enrollment.key.toBytes(),
+      },
+      mspId: mspId4,
+      type: 'X.509',
+      };
+      await wallet.put(ca4.getCaName(), x509Identity);
+      adminIdentity = await wallet.get(ca4.getCaName());
+  }
+  //}
+
 
 }
 

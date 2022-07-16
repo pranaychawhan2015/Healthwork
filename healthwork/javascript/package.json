@@ -22,16 +22,22 @@
     "@babel/plugin-transform-typescript": "^7.16.8",
     "circular-dependency-plugin": "^5.2.2",
     "couchdb": "^0.3.8",
+    "ecdsa": "^0.7.0",
     "express": "^4.17.2",
     "fabric-ca-client": "^2.2.4",
     "fabric-network": "^2.2.4",
     "fabric-shim": "^2.2.2",
+    "js-yaml": "^4.1.0",
     "level": "^7.0.1",
     "madge": "^5.0.1",
     "nodemon": "^2.0.15",
     "openssl": "^2.0.0",
+    "openssl-nodejs": "^1.0.5",
+    "promised-io": "^0.2.3",
     "python3": "^0.0.1",
-    "serve-favicon": "^2.5.0"
+    "react-select": "^5.4.0",
+    "serve-favicon": "^2.5.0",
+    "starkbank-ecdsa": "^1.1.4"
   },
   "devDependencies": {
     "@types/node": "^17.0.25",

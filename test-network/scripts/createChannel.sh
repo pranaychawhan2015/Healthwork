@@ -26,7 +26,7 @@ createChannelTx() {
 }
 
 createChannel() {
-	setGlobals 1 0
+	setGlobals "ORG-1-CARDIOLOGY" 0
 	# Poll in case the raft leader is not set yet
 	local rc=1
 	local COUNTER=1
@@ -45,7 +45,7 @@ createChannel() {
 
 # joinChannel ORG
 joinChannel() {
-  #FABRIC_CFG_PATH=${PWD}/../config/
+  FABRIC_CFG_PATH=${PWD}/../config/
   ORG=$1
   PEER=$2
   setGlobals $ORG $PEER
@@ -78,8 +78,8 @@ infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 infoln "Generating channel create transaction '${CHANNEL_NAME}.tx'"
 createChannelTx
 
-#FABRIC_CFG_PATH=${PWD}/../config/
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/../config/
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 BLOCKFILE="./channel-artifacts/${CHANNEL_NAME}.block"
@@ -90,69 +90,69 @@ createChannel
 successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Joining peer0.org1 to the channel..."
-joinChannel 1 0
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+joinChannel "ORG-1-CARDIOLOGY" 0
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Joining peer1.org1 to the channel..."
-joinChannel 1 1
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
+joinChannel "ORG-1-CARDIOLOGY" 1
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Joining peer2.org1 to the channel..."
-joinChannel 1 2
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
+joinChannel "ORG-1-CARDIOLOGY" 2
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Joining peer3.org1 to the channel..."
-joinChannel 1 3
-FABRIC_CFG_PATH=${PWD}/../config/
+joinChannel "ORG-1-CARDIOLOGY" 3
+#FABRIC_CFG_PATH=${PWD}/../config/
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Joining peer0.org2 to the channel..."
-joinChannel 2 0
+joinChannel "ORG-2-NEPHROLOGY" 0
 infoln "Joining peer1.org2 to the channel..."
-joinChannel 2 1
+joinChannel "ORG-2-NEPHROLOGY" 1
 infoln "Joining peer2.org2 to the channel..."
-joinChannel 2 2
+joinChannel "ORG-2-NEPHROLOGY" 2
 infoln "Joining peer3.org2 to the channel..."
-joinChannel 2 3
+joinChannel "ORG-2-NEPHROLOGY" 3
 infoln "Joining peer0.org3 to the channel..."
-joinChannel 3 0
+joinChannel "ORG-3-EMERGENCY" 0
 infoln "Joining peer1.org3 to the channel..."
-joinChannel 3 1
+joinChannel "ORG-3-EMERGENCY" 1
 infoln "Joining peer2.org3 to the channel..."
-joinChannel 3 2
+joinChannel "ORG-3-EMERGENCY" 2
 infoln "Joining peer3.org3 to the channel..."
-joinChannel 3 3
+joinChannel "ORG-3-EMERGENCY" 3
 infoln "Joining peer0.org4 to the channel..."
-joinChannel 4 0
+joinChannel "ORG-4-ORTHOPAEDICS" 0
 infoln "Joining peer1.org4 to the channel..."
-joinChannel 4 1
+joinChannel "ORG-4-ORTHOPAEDICS" 1
 infoln "Joining peer2.org4 to the channel..."
-joinChannel 4 2
+joinChannel "ORG-4-ORTHOPAEDICS" 2
 infoln "Joining peer3.org4 to the channel..."
-joinChannel 4 3
+joinChannel "ORG-4-ORTHOPAEDICS" 3
 
 
 ## Set the anchor peers for each org in the channel
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Setting peer0 as anchor peer for org1..."
-setAnchorPeer 1 0
+setAnchorPeer "ORG-1-CARDIOLOGY" 0
 FABRIC_CFG_PATH=${PWD}/../config/
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Setting peer0 as anchor peer for org2..."
-setAnchorPeer 2 0
+setAnchorPeer "ORG-2-NEPHROLOGY" 0
 infoln "Setting peer0 as anchor peer for org3..."
-setAnchorPeer 3 0
+setAnchorPeer "ORG-3-EMERGENCY" 0
 infoln "Setting peer0 as anchor peer for org3..."
-setAnchorPeer 4 0
+setAnchorPeer "ORG-4-ORTHOPAEDICS" 0
 
 successln "Channel '$CHANNEL_NAME' joined"

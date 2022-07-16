@@ -21,84 +21,142 @@ class HealthWork extends Contract {
 
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
-        const patients = [
+        const doctors = [
             {
-                Name: 'Raju',
-                Age: 24,
-                Doctor_Specialization: 'Orthopedics',
-                Disease: 'Osteoarthritis',
-                Email: 'Raju@google.com',
-            },
-            // {
-            //     Name: 'API',
-            //     Value: 'Public Key'
-            // }
-            {
-                Name: 'Sam',
-                Age: 50,
-                Doctor_Specialization: 'Orthopedics',
-                Disease: 'hepatitisB',
-                Email: 'Sam@google.com'
+                Name: 'Dr. Chandramukhi',
+                Speciality: 'consultant',
+                Qualification: 'MD,DNB',
+                YOE:20,
+                Specialization:'CARDIOLOGY',
+                Symptoms_Addressed:['Chest pain', 'Dizziness', 'Fainting', 'Numbness', 'Back pain', 'Racing heartbeat', 'Pale gray or blue skin color', 'Dry or persistent cough']
             },
             {
-                Name: 'Mangesh',
-                Age: 40,
-                Doctor_Specialization: 'Obstetrics and Gynecology',
-                Disease: 'Cervical Dysplasia',
-                Email: 'Mangesh@google.com'
+                Name: 'Dr. A Srinivas Raju',
+                Speciality: 'consultant',
+                Qualification: 'MD, DNB, FSCAI',
+                YOE:10,
+                Specialization:'CARDIOLOGY',
+                Symptoms_Addressed:['Chest pain', 'Dizziness', 'Fainting', 'Numbness', 'Back pain', 'Racing heartbeat', 'Pale gray or blue skin color', 'Dry or persistent cough']
             },
             {
-                Name: 'Michael',
-                Age: 30,
-                Doctor_Specialization: 'Obstetrics and Gynecology',
-                Disease: 'Menstrual Disorders',
-                Email: 'Michael@google.com'
+                Name: 'Dr. Johann Christopher',
+                Speciality: 'consultant',
+                Qualification: 'MD, DNB, ACC, FACC, FICS',
+                YOE:16,
+                Specialization:'CARDIOLOGY',
+                Symptoms_Addressed:['Chest pain', 'Dizziness', 'Fainting', 'Numbness', 'Back pain', 'Racing heartbeat', 'Pale gray or blue skin color', 'Dry or persistent cough']
             },
             {
-                Name: 'Tyler',
-                Age: 37,
-                Doctor_Specialization: 'Dermatology',
-                Disease: 'Sunburn',
-                Email: 'Tyler@google.com'
+                Name: 'Dr. Nirmal kumar',
+                Speciality: 'consultant',
+                Qualification: 'MD,DNB',
+                YOE:4,
+                Specialization:'CARDIOLOGY',
+                Symptoms_Addressed:['Chest pain', 'Dizziness', 'Fainting', 'Numbness', 'Back pain', 'Racing heartbeat', 'Pale gray or blue skin color', 'Dry or persistent cough']
             },
             {
-                Name: 'Meena',
-                Age: 38,
-                Doctor_Specialization: 'Pediatrics',
-                Disease: 'chickenpox',
-                Email: 'Meena@google.com'
+                Name: 'Dr. Santosh Hedau',
+                Speciality: 'Renal transaplant & Nephrology',
+                Qualification: 'DNB',
+                YOE:6,
+                Specialization:'NEPHROLOGY',
+                Symptoms_Addressed:['Swelling', 'Fatigue', 'Loss of appetite', 'lower back pain']
             },
             {
-                Name: 'Cain',
-                Age: 41,
-                Doctor_Specialization: 'Radiology',
-                Disease: 'Anemia',
-                Email: 'Cain@google.com'
+                Name: 'Dr. Vikranth reddy',
+                Speciality: 'HOD & chief consultant nephrologist',
+                Qualification: 'ND,DNB,MNAMS',
+                YOE:19,
+                Specialization:'NEPHROLOGY',
+                Symptoms_Addressed:['Swelling', 'Fatigue', 'Loss of appetite', 'lower back pain']
             },
             {
-                Name: 'Vinit',
-                Age: 44,
-                Doctor_Specialization: 'Radiology',
-                Disease: 'Appendicitis',
-                Email: 'vinit@google.com'
+                Name: 'Dr. Ratan Jha',
+                Speciality: 'Sr. Nephrologist & Transplant Physician',
+                Qualification: 'DM,DNB, MD, DTCD (gold medalist), FISN',
+                YOE:30,
+                Specialization:'NEPHROLOGY',
+                Symptoms_Addressed:['Swelling', 'Fatigue', 'Loss of appetite', 'lower back pain']
+            },
+            //Speciality=:ecert,Qualification=ND,DNB:ecert,Y.O.E=20,Symptom1=Fatigue:ecert,Symptom2=Swelling
+            {
+                Name: 'Dr. Cain',
+                Speciality: 'Renal transaplant & Nephrology',
+                Qualification: 'ND,DNB',
+                YOE:20,
+                Specialization:'NEPHROLOGY',
+                Symptoms_Addressed:['Fatigue', 'Swelling']
             },
             {
-                Name: 'Sunita',
-                Age: 46,
-                Doctor_Specialization: 'Obstetrics and Gynecology',
-                Disease: 'cirrhosis',
-                Email: 'Sunita@google.com'
+                Name: 'Dr. Nikhitha .M',
+                Speciality: 'cardilogy, neurology, pulmonology, renal issues, orthopedic concerns, gynecology, dermatology, psychiatry',
+                Qualification: 'MBBS',
+                YOE:5,
+                Specialization:'EMERGENCY & ACUTE CARE',
+                Symptoms_Addressed:['chest pain', 'head/neck/spine injuries', 'swelling' ]
             },
             {
-                Name: 'Samail',
-                Age: 34,
-                Doctor_Specialization: 'Obstetrics and Gynecology',
-                Disease: 'Botulism',
-                Email: 'Samail@google.com'
+                Name: 'Dr.Subash Jain',
+                Speciality: 'cardilogy, neurology, pulmonology, renal issues, orthopedic concerns, gynecology, dermatology, psychiatry',
+                Qualification: 'MBBS',
+                YOE:3,
+                Specialization:'EMERGENCY & ACUTE CARE',
+                Symptoms_Addressed:['chest pain', 'head/neck/spine injuries', 'swelling' ]
             },
+            //Specialization=EMERGENCY & ACUTE CARE:ecert,Email=peer2.org3.example.com:ecert,Speciality=cardilogy,neurology,pulmonology,renal issues,orthopedic concerns,gynecology:ecert,Qualification=MBBS:ecert,Y.O.E=16:ecert
+            {
+                Name: 'Dr.Vinit Jain',
+                Speciality: 'cardilogy,neurology,pulmonology,renal issues,orthopedic concerns,gynecology',
+                Qualification: 'MBBS',
+                YOE:16,
+                Specialization:'EMERGENCY & ACUTE CARE',
+                Symptoms_Addressed:['chest pain', 'head/neck/spine injuries', 'swelling' ]
+            },
+            //Specialization=EMERGENCY & ACUTE CARE:ecert,Email=peer3.org3.example.com:ecert,Speciality=cardilogy,neurology,pulmonology,renal issues,gynecology:ecert,Qualification=MBBS:ecert,Y.O.E=12:ecert,Symptom1=chest pain:ecert,Symptom2=head/neck/spine injuries:ecert,Symptom3=swelling:ecert
+            {
+                Name: 'Dr.Sunita',
+                Speciality: 'cardilogy,neurology,pulmonology,renal issues,gynecology',
+                Qualification: 'MBBS',
+                YOE:12,
+                Specialization:'EMERGENCY & ACUTE CARE',
+                Symptoms_Addressed:['chest pain', 'head/neck/spine injuries', 'swelling' ]
+            },
+            //Role=Doctor:ecert,Email=peer0.org4.example.com:ecert,Specialization=ORTHOPAEDICS:ecert,Speciality=consultant:ecert,Qualification=MBBS,MS:ecert,Y.O.E=4:ecert,Numbness,Symptom1=Swelling:ecert,Symptom2=Joint pain:ecert,Symptom3=lower back pain:ecert,Symptom4=Stiffness:ecert,Symptom5=head/neck/spine injuries:ecert
+            {
+                Name: 'Dr. BN Prasad',
+                Speciality: 'consultant',
+                Qualification: 'MBBS,MS',
+                YOE:4,
+                Specialization:'ORTHOPAEDICS',
+                Symptoms_Addressed:['Numbness', 'Swelling', 'Joint pain', 'lower back pain', 'Stiffness', 'head/neck/spine injuries' ]
+            },
+            {
+                Name: 'Dr. K Ratnakar Rao',
+                Speciality: 'HOD – Sr. Consultant Joint replacement & Arthoscopic surgery',
+                Qualification: 'MBBS,MS',
+                YOE:18,
+                Specialization:'ORTHOPAEDICS',
+                Symptoms_Addressed:['Numbness', 'Swelling', 'Joint pain', 'lower back pain', 'Stiffness', 'head/neck/spine injuries' ]
+            },
+            {
+                Name: 'Dr. Anand Nagarani',
+                Speciality: 'consultant orthopedic surgeon',
+                Qualification: 'MBBS,MS,Mch Ortho(UK)',
+                YOE:17,
+                Specialization:'ORTHOPAEDICS',
+                Symptoms_Addressed:['Numbness', 'Swelling', 'Joint pain', 'lower back pain', 'Stiffness', 'head/neck/spine injuries' ]
+            },
+            {
+                Name: 'Dr. CR Harish',
+                Speciality: 'consultant general & laproscopic surgeon',
+                Qualification: 'MS,NIMS',
+                YOE:20,
+                Specialization:'ORTHOPAEDICS',
+                Symptoms_Addressed:['Numbness', 'Swelling', 'Joint pain', 'lower back pain', 'Stiffness', 'head/neck/spine injuries' ]
+            }
         ];
 
-        for (let i = 0; i < patients.length; i++) {
+        for (let i = 0; i < doctors.length; i++) {
             patients[i].docType = 'patient';
             patients[i].patientNumber = 'patient ' + i;
             await ctx.stub.putState(patients[i].Email, Buffer.from(JSON.stringify(patients[i])));
@@ -124,7 +182,7 @@ class HealthWork extends Contract {
         return JSON.stringify(allResults);
     }
 
-    async queryPatient(ctx, email) {
+    async queryPatient(ctx, email, priv_peer, priv_key, msg) {
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
             return new String(`${email} does not exist`);
@@ -133,10 +191,15 @@ class HealthWork extends Contract {
         return patientAsBytes.toString();
     }
 
-    async createPatient(ctx, patientNumber, Name, Age ,Doctor_Specialization, Disease, Email, Adhar, Organization) {
+    async noop(ctx, data)
+    {
+        return data;
+    }
+
+    async createPatient(ctx, patientNumber, Name, Age ,Departments, Symptoms, Email, Adhar,Emergency_level, priv_peer, priv_key, msg) {
         console.info('============= START : Create Car ===========');
 
-        if(patientNumber == null || Name == null || Email == null || Organization == null || Adhar == null || Age == null || Doctor_Specialization == null || Disease == null)
+        if(patientNumber == null || Name == null || Email == null  || Adhar == null || Age == null || Departments == null || Symptoms == null || Emergency_level == null)
         {
             return new String("One of the parameters are missing");
         }
@@ -145,11 +208,12 @@ class HealthWork extends Contract {
             docType: 'patient',
             Name,
             Age,
-            Doctor_Specialization,
-            Disease,
+            Departments,
+            Symptoms,
             Email,
             Adhar,
-            Organization
+            Organization,
+            Emergency_level
         };
         
         //const result =  ctx.stub.getSignedProposal();
@@ -176,7 +240,7 @@ class HealthWork extends Contract {
         //console.info('============= END : Create Car ===========');
     }
 
-    async queryAllPatients(ctx) {
+    async queryAllPatients(ctx, priv_peer, priv_key, msg) {
         const startKey = '';
         const endKey = '';
         const allResults = [];
@@ -203,7 +267,42 @@ class HealthWork extends Contract {
         return JSON.stringify(allResults);
     }
 
-    async changePatientName(ctx, email, patientNumber, newName) {
+    async queryAllDoctorsForThisSymptom(ctx, symptoms){
+        const startKey = '';
+        const endKey = '';
+        const allResults = [];
+        for await (const {key, value} of ctx.stub.getStateByRange(startKey, endKey)) {
+            const strValue = Buffer.from(value).toString('utf8');
+            let record;
+            try {
+                record = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+            if (record.Specialization != null || record.Specialization != undefined){
+                    record.Symptoms.forEach(symptom => {
+                        if(symptoms.includes(symptom))
+                        {
+                            allResults.push({ Key: key, Record: record });
+                        }
+                    });
+            } 
+            
+        }
+        
+        // const cid = new ClientIdentity(ctx.stub);
+        // const result = await cid.getAttributeValue("Contractor");
+        // if(result != null)
+        // {
+        //     allResults.push(result.toString());
+        // }
+
+        console.info(allResults);
+        return JSON.stringify(allResults);
+    }
+
+    async changePatientName(ctx, email, patientNumber, newName, priv_peer, priv_key, msg) {
         console.info('============= START : changeCarOwner ===========');
 
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
@@ -240,7 +339,7 @@ class HealthWork extends Contract {
         
     }
     
-    async deletePatient(ctx, email, patientNumber)
+    async deletePatient(ctx, email, patientNumber, priv_peer, priv_key, msg)
     {
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
@@ -268,7 +367,7 @@ class HealthWork extends Contract {
         return JSON.stringify(allResults);
     }
 
-    async deleteAllPatients(ctx)
+    async deleteAllPatients(ctx, priv_peer, priv_key, msg)
     {
         const startKey = '';
         const endKey = '';
@@ -280,7 +379,7 @@ class HealthWork extends Contract {
         return JSON.stringify('');
     }
 
-    async testsampleReport(ctx, email, patientNumber)
+    async testsampleReport(ctx, email, patientNumber, priv_peer, priv_key, msg)
     {
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
@@ -308,7 +407,7 @@ class HealthWork extends Contract {
 
     }
 
-    async dischargeReport(ctx, email, patientNumber)
+    async dischargeReport(ctx, email, patientNumber, priv_peer, priv_key, msg)
     {
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
@@ -340,7 +439,7 @@ class HealthWork extends Contract {
         await ctx.stub.putState(email, Buffer.from(JSON.stringify(patient)));
     }
 
-    async getfunctionKey(ctx, key)
+    async getfunctionKey(ctx, key, priv_peer, priv_key, msg)
     {
         //const data = ctx.stub.getTransient();
 
@@ -349,6 +448,11 @@ class HealthWork extends Contract {
 
     }
 
+    async queryAllDoctors(ctx)
+    {
+
+    }
+    
      randomDate (start, end) {
         return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
       }

@@ -46,15 +46,15 @@ Organizations:
             - orderer2.example.com:7055
             - orderer3.example.com:7056
 
-    - &Org1
+    - &ORG-1-CARDIOLOGY
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org1MSP
+        Name: ORG-1-CARDIOLOGY
 
         # ID to load the MSP definition as
-        ID: Org1MSP
+        ID: ORG-1-CARDIOLOGY
 
-        MSPDir: ../organizations/peerOrganizations/org1.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/ORG-1-CARDIOLOGY.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -62,26 +62,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+                Rule: "OR('ORG-1-CARDIOLOGY.admin', 'ORG-1-CARDIOLOGY.peer', 'ORG-1-CARDIOLOGY.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
+                Rule: "OR('ORG-1-CARDIOLOGY.admin', 'ORG-1-CARDIOLOGY.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin')"
+                Rule: "OR('ORG-1-CARDIOLOGY.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org1MSP.peer')"
+                Rule: "OR('ORG-1-CARDIOLOGY.peer')"
 
-    - &Org2
+    - &ORG-2-NEPHROLOGY
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org2MSP
+        Name: ORG-2-NEPHROLOGY
 
         # ID to load the MSP definition as
-        ID: Org2MSP
+        ID: ORG-2-NEPHROLOGY
 
-        MSPDir: ../organizations/peerOrganizations/org2.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/ORG-2-NEPHROLOGY.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -89,26 +89,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')"
+                Rule: "OR('ORG-2-NEPHROLOGY.admin', 'ORG-2-NEPHROLOGY.peer', 'ORG-2-NEPHROLOGY.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin', 'Org2MSP.client')"
+                Rule: "OR('ORG-2-NEPHROLOGY.admin', 'ORG-2-NEPHROLOGY.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin')"
+                Rule: "OR('ORG-2-NEPHROLOGY.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org2MSP.peer')"
+                Rule: "OR('ORG-2-NEPHROLOGY.peer')"
 
-    - &Org3
+    - &ORG-3-EMERGENCY
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org3MSP
+        Name: ORG-3-EMERGENCY
 
         # ID to load the MSP definition as
-        ID: Org3MSP
+        ID: ORG-3-EMERGENCY
 
-        MSPDir: ../organizations/peerOrganizations/org3.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/ORG-3-EMERGENCY.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -116,26 +116,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin', 'Org3MSP.peer', 'Org3MSP.client')"
+                Rule: "OR('ORG-3-EMERGENCY.admin', 'ORG-3-EMERGENCY.peer', 'ORG-3-EMERGENCY.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin', 'Org3MSP.client')"
+                Rule: "OR('ORG-3-EMERGENCY.admin', 'ORG-3-EMERGENCY.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin')"
+                Rule: "OR('ORG-3-EMERGENCY.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org3MSP.peer')"
+                Rule: "OR('ORG-3-EMERGENCY.peer')"
 
-    - &Org4
+    - &ORG-4-ORTHOPAEDICS
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org4MSP
+        Name: ORG-4-ORTHOPAEDICS
 
         # ID to load the MSP definition as
-        ID: Org4MSP
+        ID: ORG-4-ORTHOPAEDICS
 
-        MSPDir: ../organizations/peerOrganizations/org4.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/ORG-4-ORTHOPAEDICS.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -143,16 +143,16 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org4MSP.admin', 'Org4MSP.peer', 'Org4MSP.client')"
+                Rule: "OR('ORG-4-ORTHOPAEDICS.admin', 'ORG-4-ORTHOPAEDICS.peer', 'ORG-4-ORTHOPAEDICS.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org4MSP.admin', 'Org4MSP.client')"
+                Rule: "OR('ORG-4-ORTHOPAEDICS.admin', 'ORG-4-ORTHOPAEDICS.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org4MSP.admin')"
+                Rule: "OR('ORG-4-ORTHOPAEDICS.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org4MSP.peer')"
+                Rule: "OR('ORG-4-ORTHOPAEDICS.peer')"
 
 ################################################################################
 #
@@ -244,7 +244,7 @@ Application: &ApplicationDefaults
             Type: ImplicitMeta
             Rule: "ANY Endorsement"
             # Type: Signature
-            # Rule: "OR('Org4MSP.peer',AND('Org2MSP.peer','Org3MSP.peer'))"
+            # Rule: "OR('ORG-4–ORTHOPAEDICS.peer',AND('ORG-2–NEPHROLOGY.peer','ORG-3-EMERGENCY.peer'))"
 
     Capabilities:
         <<: *ApplicationCapabilities
@@ -380,19 +380,19 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    - *Org1
-                    - *Org2
-                    - *Org3
-                    - *Org4
+                    - *ORG-1-CARDIOLOGY
+                    - *ORG-2-NEPHROLOGY
+                    - *ORG-3-EMERGENCY
+                    - *ORG-4-ORTHOPAEDICS
     OrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Org1
-                - *Org2
-                - *Org3
-                - *Org4
+                - *ORG-1-CARDIOLOGY
+                - *ORG-2-NEPHROLOGY
+                - *ORG-3-EMERGENCY
+                - *ORG-4-ORTHOPAEDICS
             Capabilities:
                 <<: *ApplicationCapabilities

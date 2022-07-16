@@ -134,9 +134,12 @@ export default class ViewPatient extends React.Component {
                     <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Patient Number </td><td style={{border: "3px solid rgb(0, 0, 0)",textAlign: 'center'}}>{this.state.patient.patientNumber}</td></tr>
                     <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Name </td><td style={{border: "3px solid rgb(0, 0, 0)",textAlign: 'center'}}>{this.state.patient.Name}</td></tr>
                     <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Age </td><td style={{border: "3px solid rgb(0, 0, 0)",textAlign: 'center'}}>{this.state.patient.Age}</td></tr>
-                    <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Doctor Specialization </td><td style={{textAlign: 'center',border: "3px solid rgb(0, 0, 0)"}}>{this.state.patient.Doctor_Specialization}</td></tr>
-                    <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Disease </td><td style={{textAlign: 'center',border: "3px solid rgb(0, 0, 0)"}}>{this.state.patient.Disease}</td></tr>
-                     {this.state.patient.sample_ID ? (
+                    <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Departments </td><td style={{textAlign: 'center',border: "3px solid rgb(0, 0, 0)"}}>{this.state.patient.Departments}</td></tr>
+                    <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Symptoms </td><td style={{textAlign: 'center',border: "3px solid rgb(0, 0, 0)"}}>{this.state.patient.Symptoms}</td></tr>
+                    <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Emergency Level </td><td style={{textAlign: 'center',border: "3px solid rgb(0, 0, 0)"}}>{this.state.patient.Emergency_level}</td></tr>
+                    <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Doctors </td><td style={{textAlign: 'center',border: "3px solid rgb(0, 0, 0)"}}>{this.state.patient.Doctors}</td></tr>
+                     
+                     {/* {this.state.patient.sample_ID ? (
                                             <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Sample ID :</td><td style={{textAlign: 'center',border: "3px solid rgb(0, 0, 0)"}}>{this.state.patient.sample_ID}</td></tr>
                      ) :(<tr hidden={true}><td></td></tr>)
                     }
@@ -171,7 +174,8 @@ export default class ViewPatient extends React.Component {
                     {this.state.patient.Discharging_Contact ? (
                                             <tr><td style={{border: "3px solid rgb(0, 0, 0)",width: '50%', textAlign: 'center'}}>Discharging Contact :</td><td style={{textAlign: 'center',border: "3px solid rgb(0, 0, 0)"}}>{this.state.patient.Discharging_Contact.number.national}</td></tr>
                     ): (<tr hidden={true}><td></td></tr>)
-                    }
+                    } */}
+
 
                 </tbody>
             </table>
@@ -203,21 +207,21 @@ onRemove={this.onRemove} // Function will trigger on remove event
 displayValue="label" // Property name to display in the dropdown options
 /> */}
 
-<select className='browser-default' required value={this.state.policyName} onChange={this.onPolicyChanged.bind(this)} style={{border: "3px solid rgb(0, 0, 0)"}}>
+{/* <select className='browser-default' required value={this.state.policyName} onChange={this.onPolicyChanged.bind(this)} style={{border: "3px solid rgb(0, 0, 0)"}}>
                                                        <option value=""   disabled>Choose policy</option>
                                                        <option value={['Lab_Technician','Doctor']} label='Test Sample Report'>Test Sample Report</option>
                                                        <option value={['Doctor','Admin']} label= 'Discharge Summary'>Discharge Summary</option>
-</select>
+</select> */}
 
                         </div>
 
-                        <div className='row'>
+                        {/* <div className='row'>
                             <div className="input-field col s12">
                                 <button className="btn waves-effect waves-light light-blue darken-3" type="submit" name="action">Submit
                                     <i className="material-icons right">send</i>
                                 </button>
                             </div>
-                        </div>
+                        </div> */}
                     </form>
                 </div>
             </div>

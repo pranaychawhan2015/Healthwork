@@ -289,103 +289,104 @@ chaincodeQuery() {
 }
 
 ## package the chaincode
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+FABRIC_CFG_PATH=${PWD}/../config/
+
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
 infoln "FABRIC PATH :  ${FABRIC_CFG_PATH}"
 packageChaincode
 
 ## Install chaincode on peer0.org1 and peer0.org2
 infoln "Installing chaincode on peer0.org1..."
-installChaincode 1 0
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+installChaincode "ORG-1-CARDIOLOGY" 0
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
 infoln "FABRIC PATH :  ${FABRIC_CFG_PATH}"
 
 infoln "Installing chaincode on peer1.org1..."
-installChaincode 1 1
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
+installChaincode "ORG-1-CARDIOLOGY" 1
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Install chaincode on peer2.org1..."
-installChaincode 1 2
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
+installChaincode "ORG-1-CARDIOLOGY" 2
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Install chaincode on peer3.org1..."
-installChaincode 1 3
+installChaincode "ORG-1-CARDIOLOGY" 3
 
-FABRIC_CFG_PATH=${PWD}/../config/
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Install chaincode on peer0.org2..."
-installChaincode 2 0
+installChaincode "ORG-2-NEPHROLOGY" 0
 infoln "Install chaincode on peer1.org2..."
-installChaincode 2 1
+installChaincode "ORG-2-NEPHROLOGY" 1
 infoln "Install chaincode on peer2.org2..."
-installChaincode 2 2
+installChaincode "ORG-2-NEPHROLOGY" 2
 infoln "Install chaincode on peer3.org2..."
-installChaincode 2 3
+installChaincode "ORG-2-NEPHROLOGY" 3
 infoln "Install chaincode on peer0.org3..."
-installChaincode 3 0
+installChaincode "ORG-3-EMERGENCY" 0
 infoln "Install chaincode on peer1.org3..."
-installChaincode 3 1
+installChaincode "ORG-3-EMERGENCY" 1
 infoln "Install chaincode on peer2.org3..."
-installChaincode 3 2
+installChaincode "ORG-3-EMERGENCY" 2
 infoln "Install chaincode on peer3.org3..."
-installChaincode 3 3
+installChaincode "ORG-3-EMERGENCY" 3
 infoln "Install chaincode on peer0.org4..."
-installChaincode 4 0
+installChaincode "ORG-4-ORTHOPAEDICS" 0
 infoln "Install chaincode on peer1.org4..."
-installChaincode 4 1
+installChaincode "ORG-4-ORTHOPAEDICS" 1
 infoln "Install chaincode on peer2.org4..."
-installChaincode 4 2
+installChaincode "ORG-4-ORTHOPAEDICS" 2
 infoln "Install chaincode on peer3.org4..."
-installChaincode 4 3
+installChaincode "ORG-4-ORTHOPAEDICS" 3
 
 ## query whether the chaincode is installed
-FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
-queryInstalled 1 0
+queryInstalled "ORG-1-CARDIOLOGY" 0
 
-FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 ## approve the definition for org1
-approveForMyOrg 1 1
+approveForMyOrg "ORG-1-CARDIOLOGY" 1
 #approveForMyOrg 1 1
 
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 to have approved and org2 not to
-checkCommitReadiness 1 1
+checkCommitReadiness "ORG-1-CARDIOLOGY" 1
 
 FABRIC_CFG_PATH=${PWD}/../config/
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 ## now approve also for org2
-approveForMyOrg 2 1
+approveForMyOrg "ORG-2-NEPHROLOGY" 1
 #approveForMyOrg 2 1
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 2 1
+checkCommitReadiness "ORG-2-NEPHROLOGY" 1
 
 ## now approve also for org3
-approveForMyOrg 3 1
+approveForMyOrg "ORG-3-EMERGENCY" 1
 #approveForMyOrg 3 1
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 3 1
+checkCommitReadiness "ORG-3-EMERGENCY" 1
 
 ## now approve also for org4
-approveForMyOrg 4 1
+approveForMyOrg "ORG-4-ORTHOPAEDICS" 1
 #approveForMyOrg 4 1
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 4 1
+checkCommitReadiness "ORG-4-ORTHOPAEDICS" 1
 
 ## now that we know for sure both orgs have approved, commit the definition
-commitChaincodeDefinition 1 2 3 4
+commitChaincodeDefinition "ORG-1-CARDIOLOGY" "ORG-2-NEPHROLOGY" "ORG-3-EMERGENCY" "ORG-4-ORTHOPAEDICS"
 
 ## query on both orgs to see that the definition committed successfully
 # queryCommitted 1 0
@@ -410,7 +411,7 @@ commitChaincodeDefinition 1 2 3 4
 if [ "$CC_INIT_FCN" = "NA" ]; then
   infoln "Chaincode initialization is not required"
 else
-  chaincodeInvokeInit 1 2 3 4
+  chaincodeInvokeInit "ORG-1-CARDIOLOGY" "ORG-2-NEPHROLOGY" "ORG-3-EMERGENCY" "ORG-4-ORTHOPAEDICS"
 fi
 
 exit 0

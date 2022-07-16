@@ -11,67 +11,67 @@ networks:
 
 services:
 
-  ca_org1:
+  ORG-1-CARDIOLOGY:
     image: hyperledger/fabric-ca:latest
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org1
+      - FABRIC_CA_SERVER_CA_NAME=ORG-1-CARDIOLOGY
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=7054
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org1:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org1
+      - ../organizations/fabric-ca/ORG-1-CARDIOLOGY:/etc/hyperledger/fabric-ca-server
+    container_name: ORG-1-CARDIOLOGY
     networks:
       - test
 
-  ca_org2:
+  ORG-2-NEPHROLOGY:
     image: hyperledger/fabric-ca:latest
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org2
+      - FABRIC_CA_SERVER_CA_NAME=ORG-2-NEPHROLOGY
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=8054
     ports:
       - "8054:8054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org2:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org2
+      - ../organizations/fabric-ca/ORG-2-NEPHROLOGY:/etc/hyperledger/fabric-ca-server
+    container_name: ORG-2-NEPHROLOGY
     networks:
       - test
   
-  ca_org3:
+  ORG-3-EMERGENCY:
     image: hyperledger/fabric-ca:latest
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org3
+      - FABRIC_CA_SERVER_CA_NAME=ORG-3-EMERGENCY
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=10054
     ports:
       - "10054:10054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org3:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org3
+      - ../organizations/fabric-ca/ORG-3-EMERGENCY:/etc/hyperledger/fabric-ca-server
+    container_name: ORG-3-EMERGENCY
     networks:
       - test
 
-  ca_org4:
+  ORG-4-ORTHOPAEDICS:
     image: hyperledger/fabric-ca:latest
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org4
+      - FABRIC_CA_SERVER_CA_NAME=ORG-4-ORTHOPAEDICS
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=11054
     ports:
       - "11054:11054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org4:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org4
+      - ../organizations/fabric-ca/ORG-4-ORTHOPAEDICS:/etc/hyperledger/fabric-ca-server
+    container_name: ORG-4-ORTHOPAEDICS
     networks:
       - test
 

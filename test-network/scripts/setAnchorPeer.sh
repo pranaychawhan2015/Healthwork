@@ -17,42 +17,42 @@ createAnchorPeerUpdate() {
 
   infoln "Generating anchor peer update transaction for Org${ORG} on channel $CHANNEL_NAME"
 
-  if [ $ORG -eq 1 ]; then
+  if [ $ORG == "ORG-1-CARDIOLOGY" ]; then
     if [ $PEER -eq 0 ]; then
-      HOST="peer0.org1.example.com"
+      HOST="peer0.ORG-1-CARDIOLOGY.example.com"
       PORT=7051
     elif [ $PEER -eq 1 ]; then
-      HOST="peer1.org1.example.com"
+      HOST="peer1.ORG-1-CARDIOLOGY.example.com"
       PORT=8051
     else
       errorln "peer${PEER} unknown"
     fi
-  elif [ $ORG -eq 2 ]; then
+  elif [ $ORG == "ORG-2-NEPHROLOGY" ]; then
     if [ $PEER -eq 0 ]; then
-      HOST="peer0.org2.example.com"
+      HOST="peer0.ORG-2-NEPHROLOGY.example.com"
       PORT=9051
     elif [ $PEER -eq 1 ]; then
-      HOST="peer1.org2.example.com"
+      HOST="peer1.ORG-2-NEPHROLOGY.example.com"
       PORT=12051
     else
       errorln "peer${PEER} unknown"
     fi
-  elif [ $ORG -eq 3 ]; then
+  elif [ $ORG == "ORG-3-EMERGENCY" ]; then
     if [ $PEER -eq 0 ]; then
-      HOST="peer0.org3.example.com"
+      HOST="peer0.ORG-3-EMERGENCY.example.com"
       PORT=10051
     elif [ $PEER -eq 1 ]; then
-      HOST="peer1.org3.example.com"
+      HOST="peer1.ORG-3-EMERGENCY.example.com"
       PORT=13051
     else
       errorln "peer${PEER} unknown"
     fi
-  elif [ $ORG -eq 4 ]; then
+  elif [ $ORG == "ORG-4-ORTHOPAEDICS" ]; then
     if [ $PEER -eq 0 ]; then
-      HOST="peer0.org4.example.com"
+      HOST="peer0.ORG-4-ORTHOPAEDICS.example.com"
       PORT=11051
     elif [ $PEER -eq 1 ]; then
-      HOST="peer1.org4.example.com"
+      HOST="peer1.ORG-4-ORTHOPAEDICS.example.com"
       PORT=14051
     else
       errorln "peer${PEER} unknown"

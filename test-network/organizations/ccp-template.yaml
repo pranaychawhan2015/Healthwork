@@ -1,49 +1,75 @@
 ---
-name: test-network-org${ORG}
+name: test-network-${ORG}
 version: 1.0.0
 client:
-  organization: Org${ORG}
+  organization: ${ORG}
   connection:
     timeout:
       peer:
         endorser: '300'
 organizations:
   Org${ORG}:
-    mspid: Org${ORG}MSP
+    mspid: ${ORG}MSP
     peers:
-    - peer0.org${ORG}.example.com
-    - peer1.org${ORG}.example.com
+    - peer0.${ORG}.example.com
+    - peer1.${ORG}.example.com
+    - peer2.${ORG}.example.com
+    - peer3.${ORG}.example.com
     certificateAuthorities:
-    - ca.org${ORG}.example.com
+    - ca.${ORG}.example.com
 peers:
-  peer0.org${ORG}.example.com:
+  peer0.${ORG}.example.com:
     url: grpcs://localhost:${P0PORT}
     tlsCACerts:
       pem: |
           ${PEERPEM}
     grpcOptions:
-      ssl-target-name-override: peer0.org${ORG}.example.com
-      hostnameOverride: peer0.org${ORG}.example.com
+      ssl-target-name-override: peer0.${ORG}.example.com
+      hostnameOverride: peer0.${ORG}.example.com
     signCert: |
           ${CERT0}
     privateKey: |
           ${KEY0}
-  peer1.org${ORG}.example.com:
+  peer1.${ORG}.example.com:
     url: grpcs://localhost:${P1PORT}
     tlsCACerts:
       pem: |
           ${PEERPEM}
     grpcOptions:
-      ssl-target-name-override: peer1.org${ORG}.example.com
-      hostnameOverride: peer1.org${ORG}.example.com
+      ssl-target-name-override: peer1.${ORG}.example.com
+      hostnameOverride: peer1.${ORG}.example.com
     signCert: |
           ${CERT1}
     privateKey: |
           ${KEY1}
+  peer2.${ORG}.example.com:
+    url: grpcs://localhost:${P2PORT}
+    tlsCACerts:
+      pem: |
+          ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer2.${ORG}.example.com
+      hostnameOverride: peer2.${ORG}.example.com
+    signCert: |
+          ${CERT2}
+    privateKey: |
+          ${KEY2}
+  peer3.${ORG}.example.com:
+    url: grpcs://localhost:${P3PORT}
+    tlsCACerts:
+      pem: |
+          ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer3.${ORG}.example.com
+      hostnameOverride: peer3.${ORG}.example.com
+    signCert: |
+          ${CERT3}
+    privateKey: |
+          ${KEY3}
 certificateAuthorities:
-  ca.org${ORG}.example.com:
+  ca.${ORG}.example.com:
     url: https://localhost:${CAPORT}
-    caName: ca-org${ORG}
+    caName: ${CAORG}
     tlsCACerts:
       pem: 
         - |

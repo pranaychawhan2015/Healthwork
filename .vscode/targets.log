@@ -2,46 +2,86 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target 'all'.  Stop.
 
 # GNU Make 4.1
+ 
 # Built for x86_64-pc-linux-gnu
+ 
 # Copyright (C) 1988-2014 Free Software Foundation, Inc.
+ 
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+ 
 # This is free software: you are free to change and redistribute it.
+ 
 # There is NO WARRANTY, to the extent permitted by law.
+ 
 
-# Make data base, printed on Mon Jun 27 14:09:38 2022
+ 
+# Make data base, printed on Wed Jul  6 15:34:12 2022
+ 
 
 # Variables
+ 
 
+ 
 # automatic
+ 
 <D = $(patsubst %/,%,$(dir $<))
+ 
 # automatic
+ 
 ?F = $(notdir $?)
+ 
 # environment
+ 
 DESKTOP_SESSION = ubuntu
+ 
 # default
+ 
 .SHELLFLAGS := -c
+ 
 # environment
+ 
 XDG_SESSION_TYPE = x11
+ 
 # environment
+ 
 VSCODE_LOG_NATIVE = false
+ 
 # environment
+ 
 UPSTART_INSTANCE = 
+ 
 # automatic
+ 
 ?D = $(patsubst %/,%,$(dir $?))
+ 
 # automatic
+ 
 @D = $(patsubst %/,%,$(dir $@))
+ 
 # environment
+ 
 XAUTHORITY = /home/cps16/.Xauthority
+ 
 # environment
+ 
 GDMSESSION = ubuntu
+ 
 # environment
+ 
 XMODIFIERS = @im=ibus
+ 
 # makefile
+ 
 CURDIR := /home/cps16/Documents/Medical_Records
+ 
 # makefile
+ 
 SHELL = /bin/sh
+ 
 # environment
+ 
 UPSTART_JOB = unity7
+ 
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
@@ -63,7 +103,7 @@ MANDATORY_PATH = /usr/share/gconf/ubuntu.mandatory.path
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:abstract=/tmp/dbus-ywdE2MtmfW
+DBUS_SESSION_BUS_ADDRESS = unix:abstract=/tmp/dbus-lJIYOIkodn
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
@@ -71,7 +111,7 @@ UNITY_DEFAULT_PROFILE = unity
 # environment
 CLUTTER_IM_MODULE = xim
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-4cd979d1-f2cd-4736-b92c-3038f7f18ac5.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-2e6c91ff-5cf6-4252-8935-b052814ac2db.sock
 # environment
 VSCODE_CWD = /home/cps16
 # environment
@@ -85,7 +125,7 @@ UNITY_HAS_3D_SUPPORT = true
 # environment
 GPG_AGENT_INFO = /home/cps16/.gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/cps16:@/tmp/.ICE-unix/4224,unix/cps16:/tmp/.ICE-unix/4224
+SESSION_MANAGER = local/cps16:@/tmp/.ICE-unix/4155,unix/cps16:/tmp/.ICE-unix/4155
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -109,7 +149,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 31703
+GIO_LAUNCHED_DESKTOP_FILE_PID = 10409
 # automatic
 %F = $(notdir $%)
 # environment
@@ -137,13 +177,13 @@ VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 HOME = /home/cps16
 # environment
-VSCODE_CODE_CACHE_PATH = /home/cps16/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /home/cps16/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
 # environment
 LOGNAME = cps16
 # environment
 QT_LINUX_ACCESSIBILITY_ALWAYS_ON = 1
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -195,7 +235,7 @@ LANGUAGE = en_IN:en
 # environment
 XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-1151cd01-1.67.2-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-1151cd01-1.68.1-main.sock
 # environment
 GNOME_KEYRING_CONTROL = 
 # makefile
@@ -221,7 +261,7 @@ DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # default
 MAKEFILES := 
 # environment
-UPSTART_SESSION = unix:abstract=/com/ubuntu/upstart-session/1000/3686
+UPSTART_SESSION = unix:abstract=/com/ubuntu/upstart-session/1000/2721
 # automatic
 <F = $(notdir $<)
 # environment
@@ -243,7 +283,7 @@ CHROME_DESKTOP = code-url-handler.desktop
 # environment
 LANG = C
 # environment
-VSCODE_PID = 31703
+VSCODE_PID = 10409
 # variable set hash-table stats:
 # Load=116/1024=11%, Rehash=0, Collisions=9/138=7%
 
@@ -292,7 +332,6 @@ makefile:
 
 # Not a target:
 GNUmakefile:
- 
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
@@ -312,6 +351,6 @@ GNUmakefile:
 # strcache performance: lookups = 25 / hit rate = 12%
 # hash-table stats:
 # Load=22/8192=0%, Rehash=0, Collisions=1/25=4%
-# Finished Make data base on Mon Jun 27 14:09:38 2022
+# Finished Make data base on Wed Jul  6 15:34:12 2022
 
  

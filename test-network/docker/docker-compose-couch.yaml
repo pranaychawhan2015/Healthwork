@@ -25,7 +25,7 @@ services:
     networks:
       - test
 
-  peer0.org1.example.com:
+  peer0.ORG-1-CARDIOLOGY.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0:5984
@@ -52,7 +52,7 @@ services:
     networks:
       - test
 
-  peer1.org1.example.com:
+  peer1.ORG-1-CARDIOLOGY.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4:5984
@@ -79,7 +79,7 @@ services:
     networks:
       - test
 
-  peer2.org1.example.com:
+  peer2.ORG-1-CARDIOLOGY.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb8:5984
@@ -106,7 +106,7 @@ services:
     networks:
       - test
 
-  peer3.org1.example.com:
+  peer3.ORG-1-CARDIOLOGY.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb9:5984
@@ -135,7 +135,7 @@ services:
     networks:
       - test
 
-  peer0.org2.example.com:
+  peer0.ORG-2-NEPHROLOGY.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984
@@ -162,7 +162,7 @@ services:
     networks:
       - test
 
-  peer1.org2.example.com:
+  peer1.ORG-2-NEPHROLOGY.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb5:5984
@@ -189,7 +189,7 @@ services:
     networks:
       - test
 
-  peer0.org3.example.com:
+  peer0.ORG-3-EMERGENCY.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
@@ -216,7 +216,7 @@ services:
     networks:
       - test
 
-  peer1.org3.example.com:
+  peer1.ORG-3-EMERGENCY.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb6:5984
@@ -243,7 +243,7 @@ services:
     networks:
       - test
 
-  peer0.org4.example.com:
+  peer0.ORG-4-ORTHOPAEDICS.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
@@ -270,7 +270,7 @@ services:
     networks:
       - test
 
-  peer1.org4.example.com:
+  peer1.ORG-4-ORTHOPAEDICS.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb7:5984
@@ -297,7 +297,7 @@ services:
     networks:
       - test
 
-  peer2.org2.example.com:
+  peer2.ORG-2-NEPHROLOGY.example.com:
      environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb10:5984
@@ -324,7 +324,7 @@ services:
     networks:
       - test
 
-  peer3.org2.example.com:
+  peer3.ORG-2-NEPHROLOGY.example.com:
      environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb11:5984
@@ -351,7 +351,7 @@ services:
     networks:
       - test
 
-  peer2.org3.example.com:
+  peer2.ORG-3-EMERGENCY.example.com:
      environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb12:5984
@@ -378,7 +378,7 @@ services:
     networks:
       - test
 
-  peer3.org3.example.com:
+  peer3.ORG-3-EMERGENCY.example.com:
      environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb13:5984
@@ -405,7 +405,7 @@ services:
     networks:
       - test
 
-  peer2.org4.example.com:
+  peer2.ORG-4-ORTHOPAEDICS.example.com:
      environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb14:5984
@@ -432,7 +432,7 @@ services:
     networks:
       - test
 
-  peer3.org4.example.com:
+  peer3.ORG-4-ORTHOPAEDICS.example.com:
      environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb15:5984

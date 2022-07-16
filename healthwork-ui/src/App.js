@@ -50,9 +50,9 @@ class App extends React.Component {
 							(props) => <Login {...props} setLoading={(status) => {this.setState({isLoading: status})}} setHidden={(status) => {this.setState({isHidden: status})}} />
 						} />
 						
-						<Route exact path="/add" render={
+						{/* <Route exact path="/add" render={
 							(props) => <AddPatient {...props} setLoading={(status) => {this.setState({isLoading: status})}} setHidden={(status) => {this.setState({isHidden: status})}} />
-						} />
+						} /> */}
 
 						<Route exact path="/view-patient-info/:email" render={
 							(props) => <ViewPatient {...props} setLoading={(status) => {this.setState({isLoading: status})}} setHidden={(status) => {this.setState({isHidden: status})}} />

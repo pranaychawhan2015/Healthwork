@@ -143,45 +143,45 @@ function createOrgs() {
     fi
     infoln "Generating certificates using cryptogen tool"
 
-    infoln "Creating Org1 Identities"
+    infoln "Creating ORG-1-CARDIOLOGY Identities"
 
     set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org1.yaml --output="organizations"
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-ORG-1-CARDIOLOGY.yaml --output="organizations"
     res=$?
     { set +x; } 2>/dev/null
     if [ $res -ne 0 ]; then
       fatalln "Failed to generate certificates..."
     fi
 
-    infoln "Creating Org2 Identities"
+    infoln "Creating ORG-2-NEPHROLOGY Identities"
 
     set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --output="organizations"
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-ORG-2-NEPHROLOGY.yaml --output="organizations"
     res=$?
     { set +x; } 2>/dev/null
     if [ $res -ne 0 ]; then
       fatalln "Failed to generate certificates..."
     fi
 
-    infoln "Creating Org3 Identities"
+    # infoln "Creating ORG-3-EMERGENCY Identities"
 
-    set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org3.yaml --output="organizations"
-    res=$?
-    { set +x; } 2>/dev/null
-    if [ $res -ne 0 ]; then
-      fatalln "Failed to generate certificates..."
-    fi
+    # set -x
+    # cryptogen generate --config=./organizations/cryptogen/crypto-config-ORG-3-EMERGENCY.yaml --output="organizations"
+    # res=$?
+    # { set +x; } 2>/dev/null
+    # if [ $res -ne 0 ]; then
+    #   fatalln "Failed to generate certificates..."
+    # fi
 
-    infoln "Creating Org4 Identities"
+    # infoln "Creating ORG-4-ORTHOPAEDICS Identities"
 
-    set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org4.yaml --output="organizations"
-    res=$?
-    { set +x; } 2>/dev/null
-    if [ $res -ne 0 ]; then
-      fatalln "Failed to generate certificates..."
-    fi
+    # set -x
+    # cryptogen generate --config=./organizations/cryptogen/crypto-config-ORG-4-ORTHOPAEDICS.yaml --output="organizations"
+    # res=$?
+    # { set +x; } 2>/dev/null
+    # if [ $res -ne 0 ]; then
+    #   fatalln "Failed to generate certificates..."
+    # fi
 
     infoln "Creating Orderer Org Identities"
 
@@ -205,28 +205,28 @@ function createOrgs() {
 
   while :
     do
-      if [ ! -f "organizations/fabric-ca/org1/tls-cert.pem" ]; then
+      if [ ! -f "organizations/fabric-ca/ORG-1-CARDIOLOGY/tls-cert.pem" ]; then
         sleep 1
       else
         break
       fi
     done
 
-    infoln "Creating Org1 Identities"
+    infoln "Creating ORG-1-CARDIOLOGY Identities"
 
-    createOrg1
+    createORG-1-CARDIOLOGY
 
-    infoln "Creating Org2 Identities"
+    infoln "Creating ORG-2-NEPHROLOGY Identities"
 
-    createOrg2
+    createORG-2-NEPHROLOGY
 
-    infoln "Creating Org3 Identities"
+    infoln "Creating ORG-3-EMERGENCY Identities"
 
-    createOrg3
+    createORG-3-EMERGENCY
 
-    infoln "Creating Org4 Identities"
+    infoln "Creating ORG-4-ORTHOPAEDICS Identities"
 
-    createOrg4
+    createORG-4-ORTHOPAEDICS
 
     infoln "Creating Orderer Org Identities"
 
@@ -234,7 +234,7 @@ function createOrgs() {
 
   fi
 
-  infoln "Generating CCP files for Org1, Org2, Org3 and Org4"
+  infoln "Generating CCP files for ORG-1-CARDIOLOGY, ORG-2-NEPHROLOGY, ORG-3-EMERGENCY and ORG-4-ORTHOPAEDICS"
   ./organizations/ccp-generate.sh
 }
 
@@ -313,7 +313,7 @@ function networkUp() {
   fi
 }
 
-# call the script to create the channel, join the peers of org1 and org2,
+# call the script to create the channel, join the peers of ORG-1-CARDIOLOGY and ORG-2-NEPHROLOGY,
 # and then update the anchor peers for each organization
 function createChannel() {
   # Bring up the network if it is not already up.
@@ -343,9 +343,9 @@ function deployCC() {
 
 # Tear down running network
 function networkDown() {
-  # stop org3 containers also in addition to org1 and org2, in case we were running sample to add org3
+  # stop ORG-3-EMERGENCY containers also in addition to ORG-1-CARDIOLOGY and ORG-2-NEPHROLOGY, in case we were running sample to add ORG-3-EMERGENCY
   docker-compose -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_CA down --volumes --remove-orphans
-  # docker-compose -f $COMPOSE_FILE_COUCH_ORG3 -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
+  # docker-compose -f $COMPOSE_FILE_COUCH_ORG-3-EMERGENCY -f $COMPOSE_FILE_ORG-3-EMERGENCY down --volumes --remove-orphans
   # Don't remove the generated artifacts -- note, the ledgers are always removed
   if [ "$MODE" != "restart" ]; then
     # Bring down the network, deleting the volumes
@@ -356,11 +356,11 @@ function networkDown() {
     # remove orderer block and other channel configuration transactions and certs
     docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf system-genesis-block/*.block organizations/peerOrganizations organizations/ordererOrganizations'
     ## remove fabric ca artifacts
-    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org1/msp organizations/fabric-ca/org1/tls-cert.pem organizations/fabric-ca/org1/ca-cert.pem organizations/fabric-ca/org1/IssuerPublicKey organizations/fabric-ca/org1/IssuerRevocationPublicKey organizations/fabric-ca/org1/fabric-ca-server.db'
-    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org2/msp organizations/fabric-ca/org2/tls-cert.pem organizations/fabric-ca/org2/ca-cert.pem organizations/fabric-ca/org2/IssuerPublicKey organizations/fabric-ca/org2/IssuerRevocationPublicKey organizations/fabric-ca/org2/fabric-ca-server.db'
+    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ORG-1-CARDIOLOGY/msp organizations/fabric-ca/ORG-1-CARDIOLOGY/tls-cert.pem organizations/fabric-ca/ORG-1-CARDIOLOGY/ca-cert.pem organizations/fabric-ca/ORG-1-CARDIOLOGY/IssuerPublicKey organizations/fabric-ca/ORG-1-CARDIOLOGY/IssuerRevocationPublicKey organizations/fabric-ca/ORG-1-CARDIOLOGY/fabric-ca-server.db'
+    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ORG-2-NEPHROLOGY/msp organizations/fabric-ca/ORG-2-NEPHROLOGY/tls-cert.pem organizations/fabric-ca/ORG-2-NEPHROLOGY/ca-cert.pem organizations/fabric-ca/ORG-2-NEPHROLOGY/IssuerPublicKey organizations/fabric-ca/ORG-2-NEPHROLOGY/IssuerRevocationPublicKey organizations/fabric-ca/ORG-2-NEPHROLOGY/fabric-ca-server.db'
     docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ordererOrg/msp organizations/fabric-ca/ordererOrg/tls-cert.pem organizations/fabric-ca/ordererOrg/ca-cert.pem organizations/fabric-ca/ordererOrg/IssuerPublicKey organizations/fabric-ca/ordererOrg/IssuerRevocationPublicKey organizations/fabric-ca/ordererOrg/fabric-ca-server.db'
-    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org3/msp organizations/fabric-ca/org3/tls-cert.pem organizations/fabric-ca/org3/ca-cert.pem organizations/fabric-ca/org3/IssuerPublicKey organizations/fabric-ca/org3/IssuerRevocationPublicKey organizations/fabric-ca/org3/fabric-ca-server.db'
-    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org4/msp organizations/fabric-ca/org4/tls-cert.pem organizations/fabric-ca/org4/ca-cert.pem organizations/fabric-ca/org4/IssuerPublicKey organizations/fabric-ca/org4/IssuerRevocationPublicKey organizations/fabric-ca/org4/fabric-ca-server.db'
+    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ORG-3-EMERGENCY/msp organizations/fabric-ca/ORG-3-EMERGENCY/tls-cert.pem organizations/fabric-ca/ORG-3-EMERGENCY/ca-cert.pem organizations/fabric-ca/ORG-3-EMERGENCY/IssuerPublicKey organizations/fabric-ca/ORG-3-EMERGENCY/IssuerRevocationPublicKey organizations/fabric-ca/ORG-3-EMERGENCY/fabric-ca-server.db'
+    docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ORG-4-ORTHOPAEDICS/msp organizations/fabric-ca/ORG-4-ORTHOPAEDICS/tls-cert.pem organizations/fabric-ca/ORG-4-ORTHOPAEDICS/ca-cert.pem organizations/fabric-ca/ORG-4-ORTHOPAEDICS/IssuerPublicKey organizations/fabric-ca/ORG-4-ORTHOPAEDICS/IssuerRevocationPublicKey organizations/fabric-ca/ORG-4-ORTHOPAEDICS/fabric-ca-server.db'
     
     # remove channel and script artifacts
     docker run --rm -v $(pwd):/data busybox sh -c 'cd /data && rm -rf channel-artifacts log.txt *.tar.gz'
@@ -395,10 +395,10 @@ COMPOSE_FILE_BASE=docker/docker-compose-test-net.yaml
 COMPOSE_FILE_COUCH=docker/docker-compose-couch.yaml
 # certificate authorities compose file
 COMPOSE_FILE_CA=docker/docker-compose-ca.yaml
-# # use this as the docker compose couch file for org3
-# COMPOSE_FILE_COUCH_ORG3=addOrg3/docker/docker-compose-couch-org3.yaml
-# # use this as the default docker-compose yaml definition for org3
-# COMPOSE_FILE_ORG3=addOrg3/docker/docker-compose-org3.yaml
+# # use this as the docker compose couch file for ORG-3-EMERGENCY
+# COMPOSE_FILE_COUCH_ORG-3-EMERGENCY=addORG-3-EMERGENCY/docker/docker-compose-couch-ORG-3-EMERGENCY.yaml
+# # use this as the default docker-compose yaml definition for ORG-3-EMERGENCY
+# COMPOSE_FILE_ORG-3-EMERGENCY=addORG-3-EMERGENCY/docker/docker-compose-ORG-3-EMERGENCY.yaml
 #
 # chaincode language defaults to "NA"
 CC_SRC_LANGUAGE="NA"
