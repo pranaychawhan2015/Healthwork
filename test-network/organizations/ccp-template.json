@@ -16,7 +16,9 @@
             "mspid": "Org${ORG}MSP",
             "peers": [
                 "peer0.org${ORG}.example.com",
-                "peer1.org${ORG}.example.com"
+                "peer1.org${ORG}.example.com",
+                "peer2.org${ORG}.example.com",
+                "peer3.org${ORG}.example.com"
             ],
             "certificateAuthorities": [
                 "ca.org${ORG}.example.com"
@@ -54,6 +56,38 @@
             },
             "privateKey":{
                 "pem":"${KEY1}"
+            }
+        },
+        "peer2.org${ORG}.example.com": {
+            "url": "grpcs://localhost:${P2PORT}",
+            "tlsCACerts": {
+                "pem": "${PEERPEM}"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer2.org${ORG}.example.com",
+                "hostnameOverride": "peer2.org${ORG}.example.com"
+            },
+            "signCert" : {
+                "pem": "${CERT2}"
+            },
+            "privateKey":{
+                "pem":"${KEY2}"
+            }
+        },
+        "peer3.org${ORG}.example.com": {
+            "url": "grpcs://localhost:${P3PORT}",
+            "tlsCACerts": {
+                "pem": "${PEERPEM}"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.org${ORG}.example.com",
+                "hostnameOverride": "peer1.org${ORG}.example.com"
+            },
+            "signCert" : {
+                "pem": "${CERT3}"
+            },
+            "privateKey":{
+                "pem":"${KEY3}"
             }
         }
     },

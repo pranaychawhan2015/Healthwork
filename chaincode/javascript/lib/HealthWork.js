@@ -124,22 +124,51 @@ class HealthWork extends Contract {
         return JSON.stringify(allResults);
     }
 
-    async queryPatient(ctx, email) {
-        const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
+    async createRecord(ctx, msg){
+        var map = new Map(JSON.parse(msg))
+        for (let [key, value] of map.entries()) {
+            console.log(key + ' - ' + value)
+        }
+        let success = await ctx.stub.putState(map.get("Email"), JSON.stringify(map))
+        let txMap = await ctx.getTransient()
+        return success,"Working good",txMap
+    }
+    
+    async queryPatient(ctx, msg, policy) {
+        let originalMessage =  Buffer.from(JSON.stringify(msg.toString('ascii'))) 
+        const patientAsBytes = await ctx.stub.getState(originalMessage.email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
-            return new String(`${email} does not exist`);
+            return new String(`${originalMessage.email} does not exist`);
         }
         console.log(patientAsBytes.toString());
         return patientAsBytes.toString();
     }
 
-    async createPatient(ctx, patientNumber, Name, Age ,Doctor_Specialization, Disease, Email, Adhar, Organization) {
-        console.info('============= START : Create Car ===========');
+    async noop(ctx, data)
+    {
+        return data;
+    }
 
-        if(patientNumber == null || Name == null || Email == null || Organization == null || Adhar == null || Age == null || Doctor_Specialization == null || Disease == null)
+    async createPatient(ctx, msg, policy) {
+        console.info('============= START : Create Car ===========');
+        console.log(msg)
+        let originalMessage =  JSON.parse(msg.toString('ascii')) 
+        console.log(originalMessage)
+        originalMessage = JSON.parse(this.hex_to_ascii(originalMessage.Value))
+        if(originalMessage.patientNumber == null || originalMessage.Name == null || originalMessage.Email == null || originalMessage.Organization == null || originalMessage.Adhar == null || originalMessage.Age == null || originalMessage.Doctor_Specialization == null || originalMessage.Disease == null)
         {
             return new String("One of the parameters are missing");
         }
+
+        let patientNumber = originalMessage.patientNumber
+        let Name = originalMessage.Name
+        let Age = originalMessage.Age
+        let Doctor_Specialization = originalMessage.Doctor_Specialization
+
+        let Email = originalMessage.Email
+        let Adhar = originalMessage.Adhar
+        let Organization = originalMessage.Organization
+
         const patient = {
             patientNumber,
             docType: 'patient',
@@ -176,7 +205,17 @@ class HealthWork extends Contract {
         //console.info('============= END : Create Car ===========');
     }
 
-    async queryAllPatients(ctx) {
+    hex_to_ascii(str1)
+    {
+	    var hex  = str1.toString();
+	    var str = '';
+	    for (var n = 0; n < hex.length; n += 2) {
+		    str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+	    }
+	    return str;
+    }
+
+    async queryAllPatients(ctx,msg, policy) {
         const startKey = '';
         const endKey = '';
         const allResults = [];
@@ -203,9 +242,12 @@ class HealthWork extends Contract {
         return JSON.stringify(allResults);
     }
 
-    async changePatientName(ctx, email, patientNumber, newName) {
+    async changePatientName(ctx, msg, policy) {
         console.info('============= START : changeCarOwner ===========');
-
+        let originalMessage =  Buffer.from(JSON.stringify(msg.toString('ascii'))) 
+        let email = originalMessage.email
+        let patientNumber = originalMessage.patientNumber
+        let newName = originalMessage.newName
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
             return new String(`${patientNumber} does not exist`);
@@ -240,8 +282,12 @@ class HealthWork extends Contract {
         
     }
     
-    async deletePatient(ctx, email, patientNumber)
-    {
+    async deletePatient(ctx, msg, policy)
+    { 
+        let originalMessage =  Buffer.from(JSON.stringify(msg.toString('ascii'))) 
+        let email = originalMessage.email
+        let patientNumber = originalMessage.patientNumber
+
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
             return new String(`${patientNumber} does not exist`);
@@ -268,7 +314,7 @@ class HealthWork extends Contract {
         return JSON.stringify(allResults);
     }
 
-    async deleteAllPatients(ctx)
+    async deleteAllPatients(ctx, msg, policy)
     {
         const startKey = '';
         const endKey = '';
@@ -280,8 +326,12 @@ class HealthWork extends Contract {
         return JSON.stringify('');
     }
 
-    async testsampleReport(ctx, email, patientNumber)
+    async testsampleReport(ctx, msg, policy)
     {
+        let originalMessage =  Buffer.from(JSON.stringify(msg.toString('ascii'))) 
+
+        let email = originalMessage.email
+        let patientNumber = originalMessage.patientNumber
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
             return new String(`${patientNumber} does not exist`);
@@ -308,8 +358,11 @@ class HealthWork extends Contract {
 
     }
 
-    async dischargeReport(ctx, email, patientNumber)
+    async dischargeReport(ctx, msg, policy)
     {
+        let originalMessage =  Buffer.from(JSON.stringify(msg.toString('ascii'))) 
+        let email = originalMessage.email
+        let patientNumber = originalMessage.patientNumber
         const patientAsBytes = await ctx.stub.getState(email); // get the car from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
             return new String(`${patientNumber} does not exist`);
@@ -340,7 +393,7 @@ class HealthWork extends Contract {
         await ctx.stub.putState(email, Buffer.from(JSON.stringify(patient)));
     }
 
-    async getfunctionKey(ctx, key)
+    async getfunctionKey(ctx, msg, policy)
     {
         //const data = ctx.stub.getTransient();
 

@@ -27,22 +27,22 @@ function createOrg1() {
 
   infoln "Registering peer0"
   set -x
-  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Doctor:ecert,Specialization=Orthopedics:ecert,Email=peer0.org1.example.com:ecert' --caname ca-org1 --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Chief_engineer:ecert,attribute1=Suppliers_Raw_materials:ecert,attribute2=Materials:ecert,attribute3=Raw_materials:ecert,attribute5=Machinary:ecert,attribute9=Sand:ecert,attribute10=Cement:ecert,attribute11=Dust:ecert,attribute12=Soils:ecert,attribute13=Cement_concrete:ecert,attribute14=Stone_Aggregates:ecert,attribute15=Bituminous_Materials' --caname ca-org1 --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/null
 
   infoln "Registering peer1"
   set -x
-  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Lab_Technician:ecert,Email=peer1.org1.example.com:ecert' --caname ca-org1 --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Engineer_in_chief:ecert,attribute1=State_HighWay:ecert,attribute2=Panchayat_Roads:ecert,attribute3=Bridge:ecert,attribute4=Materials:ecert,attribute5=Manpower:ecert,attribute6=Machinary:ecert,attribute7=metro:ecert,attribute8=flyover:ecert,attribute9=Sand:ecert,attribute10=Cement:ecert,attribute11=Dust:ecert,attribute12=Soils:ecert,attribute13=Cement_concrete:ecert,attribute14=Stone_Aggregates:ecert,attribute15=Bituminous_Materials' --caname ca-org1 --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/null
 
   infoln "Registering peer2"
   set -x
-  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Doctor:ecert,Specialization=Orthopedics:ecert,Email=peer2.org1.example.com:ecert' --caname ca-org1 --id.name peer2 --id.secret peer2pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Engineer_in_chief:ecert,attribute1=National_Highway:ecert,attribute2=Stone_Aggregates:ecert,attribute3=Cement_Concrete:ecert,attribute4=Suppliers_Raw_materials:ecert,attribute5=Electronic_Machinary:ecert,attribute6=Manpower:ecert,attribute9=Sand:ecert,attribute10=Cement:ecert,attribute11=Dust:ecert,attribute12=Soils:ecert,attribute13=Cement_concrete:ecert,attribute14=Stone_Aggregates:ecert,attribute15=Bituminous_Materials' --caname ca-org1 --id.name peer2 --id.secret peer2pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/null
 
   infoln "Registering peer3"
   set -x
-  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Lab_Technician:ecert,Email=peer3.org1.example.com:ecert' --caname ca-org1 --id.name peer3 --id.secret peer3pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Engineer_in_chief:ecert,attribute1=Dust:ecert,attribute2=Soils:ecert,attribute4=State_HighWay:ecert,attribute4=Materials:ecert,attribute5=Manpower:ecert,attribute6=Machinary:ecert,attribute9=Sand:ecert,attribute10=Cement:ecert,attribute13=Cement_concrete:ecert,attribute14=Stone_Aggregates:ecert,attribute15=Bituminous_Materials' --caname ca-org1 --id.name peer3 --id.secret peer3pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/nul
 
 
@@ -222,23 +222,23 @@ function createOrg2() {
 
   infoln "Registering peer0"
   set -x
-  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Doctor:ecert,Specialization=Radiology:ecert,Email=peer0.org2.example.com:ecert' --caname ca-org2 --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
+  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Chief_engineer:ecert,attribute1=Suppliers_Raw_materials:ecert,attribute2=Materials:ecert,attribute3=Raw_materials:ecert,attribute5=Machinary:ecert,attribute9=Sand:ecert,attribute10=Cement:ecert,attribute11=Dust:ecert,attribute12=Soils:ecert,attribute13=Cement_concrete:ecert,attribute14=Stone_Aggregates:ecert,attribute15=Bituminous_Materials' --caname ca-org2 --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
   { set +x; } 2>/dev/null
 
   infoln "Registering peer1"
   set -x
-  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Doctor:ecert,Specialization=Obstetrics and Gynecology:ecert,Email=peer1.org2.example.com:ecert' --caname ca-org2 --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
+  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Engineer_in_chief:ecert,attribute1=State_HighWay:ecert,attribute2=Panchayat_Roads:ecert,attribute3=Bridge:ecert,attribute4=Materials:ecert,attribute5=Manpower:ecert,attribute6=Machinary:ecert,attribute7=metro:ecert,attribute8=flyover:ecert,attribute9=Sand:ecert,attribute10=Cement:ecert,attribute11=Dust:ecert,attribute12=Soils:ecert,attribute13=Cement_concrete:ecert,attribute14=Stone_Aggregates:ecert,attribute15=Bituminous_Materials' --caname ca-org2 --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
   { set +x; } 2>/dev/null
 
   infoln "Registering peer2"
   set -x
-  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Doctor:ecert,Specialization=Obstetrics and Gynecology:ecert,Email=peer2.org2.example.com:ecert' --caname ca-org2 --id.name peer2 --id.secret peer2pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
+  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Engineer_in_chief:ecert,attribute1=National_Highway:ecert,attribute2=Stone_Aggregates:ecert,attribute3=Cement_Concrete:ecert,attribute4=Suppliers_Raw_materials:ecert,attribute5=Electronic_Machinary:ecert,attribute6=Manpower:ecert,attribute9=Sand:ecert,attribute10=Cement:ecert,attribute11=Dust:ecert,attribute12=Soils:ecert,attribute13=Cement_concrete:ecert,attribute14=Stone_Aggregates:ecert,attribute15=Bituminous_Materials' --caname ca-org2 --id.name peer2 --id.secret peer2pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
   { set +x; } 2>/dev/null
 
   infoln "Registering peer3"
   set -x
-  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Doctor:ecert,Specialization=Obstetrics and Gynecology:ecert,Email=peer3.org2.example.com:ecert' --caname ca-org2 --id.name peer3 --id.secret peer3pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
-  { set +x; } 2>/dev/null
+  fabric-ca-client register --enrollment.type x509 --id.attrs 'Role=Engineer_in_chief:ecert,attribute1=Dust:ecert,attribute2=Soils:ecert,attribute4=State_HighWay:ecert,attribute4=Materials:ecert,attribute5=Manpower:ecert,attribute6=Machinary:ecert,attribute9=Sand:ecert,attribute10=Cement:ecert,attribute13=Cement_concrete:ecert,attribute14=Stone_Aggregates:ecert,attribute15=Bituminous_Materials' --caname ca-org2 --id.name peer3 --id.secret peer3pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org2/tls-cert.pem
+  { set +x; } 2>/dev/nul
 
 
   infoln "Registering user"

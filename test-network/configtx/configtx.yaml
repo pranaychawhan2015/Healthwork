@@ -382,8 +382,8 @@ Profiles:
                 Organizations:
                     - *Org1
                     - *Org2
-                    - *Org3
-                    - *Org4
+                    # - *Org3
+                    # - *Org4
     OrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
@@ -392,7 +392,7 @@ Profiles:
             Organizations:
                 - *Org1
                 - *Org2
-                - *Org3
-                - *Org4
+                # - *Org3
+                # - *Org4
             Capabilities:
                 <<: *ApplicationCapabilities

@@ -56,6 +56,8 @@ export default class ViewPatient extends React.Component {
         this.props.setHidden(false);
         if(this.props.location.state.password != null)
         {
+            console.log(1);
+            console.log(this.props.match.params.email)
             axios.get('http://'+  process.env.REACT_APP_API_HOST  +':'+ process.env.REACT_APP_API_PORT+'/patients/' + this.props.match.params.email,{params: {password: this.props.location.state.password}}).then(res => {
                 this.props.setLoading(false);
                 this.props.setHidden(false);
@@ -74,6 +76,7 @@ export default class ViewPatient extends React.Component {
         }
         else
         {
+            console.log(2)
             axios.get('http://'+  process.env.REACT_APP_API_HOST  +':'+ process.env.REACT_APP_API_PORT+'/patients/' + this.props.match.params.email,{params: {password: this.state.password}}).then(res => {
                 this.props.setLoading(false);
                 if (res.data.status) {
@@ -125,7 +128,6 @@ export default class ViewPatient extends React.Component {
         
         
         const info = typeof this.state.patient.Name !== 'undefined' ? <div className="row">
-            
             <div className="col s12">
             <table className='striped responsive-table'>
                 <tbody>

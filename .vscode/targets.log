@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jun 27 14:09:38 2022
+# Make data base, printed on Thu Aug 18 16:07:37 2022
 
 # Variables
 
@@ -37,7 +37,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/cps16/Documents/Medical_Records
+CURDIR := /home/cps16/Documents/LCRecords
 # makefile
 SHELL = /bin/sh
 # environment
@@ -50,6 +50,8 @@ _ = /usr/share/code/code
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/usr/share/upstart/xdg:/etc/xdg
 # makefile
 MAKEFILE_LIST := 
+# environment
+JAVA_HOME = /usr/lib/jvm/default-java
 # automatic
 @F = $(notdir $@)
 # environment
@@ -63,7 +65,9 @@ MANDATORY_PATH = /usr/share/gconf/ubuntu.mandatory.path
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:abstract=/tmp/dbus-ywdE2MtmfW
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:abstract=/tmp/dbus-RvvugzWbUP
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
@@ -71,21 +75,23 @@ UNITY_DEFAULT_PROFILE = unity
 # environment
 CLUTTER_IM_MODULE = xim
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-4cd979d1-f2cd-4736-b92c-3038f7f18ac5.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-f939e76b-1cca-481d-8c8b-22e1287e2177.sock
 # environment
 VSCODE_CWD = /home/cps16
+# environment
+GOPROXY = https://proxy.golang.org,direct
 # environment
 XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/cps16/bin:/home/cps16/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/usr/local/go/bin:/usr/local/go/bin:/usr/local/go/bin:/home/cps16/work/bin:/usr/local/go/bin:/usr/local/go/bin:/usr/local/go/bin:/usr/local/go/src:/usr/local/go/bin
+PATH = /usr/local/go/bin:/usr/lib/jvm/default-java/bin:/home/cps16/bin:/home/cps16/.local/bin:/usr/lib/jvm/default-java/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/cps16/work/bin:/usr/local/go/src
 # environment
 UNITY_HAS_3D_SUPPORT = true
 # environment
 GPG_AGENT_INFO = /home/cps16/.gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/cps16:@/tmp/.ICE-unix/4224,unix/cps16:/tmp/.ICE-unix/4224
+SESSION_MANAGER = local/cps16:@/tmp/.ICE-unix/3342,unix/cps16:/tmp/.ICE-unix/3342
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -109,7 +115,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 31703
+GIO_LAUNCHED_DESKTOP_FILE_PID = 5101
 # automatic
 %F = $(notdir $%)
 # environment
@@ -121,7 +127,7 @@ GTK_IM_MODULE = ibus
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/cps16/Documents/Medical_Records
+PWD = /home/cps16/Documents/LCRecords
 # environment
 QT_QPA_PLATFORMTHEME = appmenu-qt5
 # environment
@@ -133,11 +139,11 @@ ORIGINAL_XDG_CURRENT_DESKTOP = Unity
 # environment
 GTK_MODULES = gail:atk-bridge:unity-gtk-module
 # environment
-VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+GOMODCACHE = /home/cps16/go/pkg/mod
 # environment
 HOME = /home/cps16
 # environment
-VSCODE_CODE_CACHE_PATH = /home/cps16/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /home/cps16/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
 # environment
 LOGNAME = cps16
 # environment
@@ -195,7 +201,7 @@ LANGUAGE = en_IN:en
 # environment
 XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-1151cd01-1.67.2-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-1151cd01-1.68.1-main.sock
 # environment
 GNOME_KEYRING_CONTROL = 
 # makefile
@@ -221,7 +227,7 @@ DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # default
 MAKEFILES := 
 # environment
-UPSTART_SESSION = unix:abstract=/com/ubuntu/upstart-session/1000/3686
+UPSTART_SESSION = unix:abstract=/com/ubuntu/upstart-session/1000/2928
 # automatic
 <F = $(notdir $<)
 # environment
@@ -243,9 +249,9 @@ CHROME_DESKTOP = code-url-handler.desktop
 # environment
 LANG = C
 # environment
-VSCODE_PID = 31703
+VSCODE_PID = 5101
 # variable set hash-table stats:
-# Load=116/1024=11%, Rehash=0, Collisions=9/138=7%
+# Load=119/1024=12%, Rehash=0, Collisions=11/141=8%
 
 # Pattern-specific Variable Values
 
@@ -253,7 +259,7 @@ VSCODE_PID = 31703
 
 # Directories
 
-# . (device 2056, inode 18352530): 14 files, no impossibilities.
+# . (device 2056, inode 18614163): 14 files, no impossibilities.
 
 # 14 files, no impossibilities in 1 directories.
 
@@ -286,13 +292,13 @@ makefile:
 
 # Not a target:
 .DEFAULT:
+ 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
 GNUmakefile:
- 
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
@@ -312,6 +318,6 @@ GNUmakefile:
 # strcache performance: lookups = 25 / hit rate = 12%
 # hash-table stats:
 # Load=22/8192=0%, Rehash=0, Collisions=1/25=4%
-# Finished Make data base on Mon Jun 27 14:09:38 2022
+# Finished Make data base on Thu Aug 18 16:07:37 2022
 
  

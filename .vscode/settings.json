@@ -1,4 +1,7 @@
 {
-    "go.autocompleteUnimportedPackages": true,
-    "go.useLanguageServer": true
+    "gopls": {
+        "completeUnimported": true
+    },
+    "go.useLanguageServer": true,
+    "go.gopath": "/home/cps16/go"
 }

@@ -1,1 +1,0 @@
-export {createQueryHandler} from './SampleQueryHandler';

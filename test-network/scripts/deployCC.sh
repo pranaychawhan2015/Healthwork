@@ -289,24 +289,24 @@ chaincodeQuery() {
 }
 
 ## package the chaincode
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
 infoln "FABRIC PATH :  ${FABRIC_CFG_PATH}"
 packageChaincode
 
 ## Install chaincode on peer0.org1 and peer0.org2
 infoln "Installing chaincode on peer0.org1..."
 installChaincode 1 0
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
 infoln "FABRIC PATH :  ${FABRIC_CFG_PATH}"
 
 infoln "Installing chaincode on peer1.org1..."
 installChaincode 1 1
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Install chaincode on peer2.org1..."
 installChaincode 1 2
-FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 infoln "Install chaincode on peer3.org1..."
@@ -323,30 +323,30 @@ infoln "Install chaincode on peer2.org2..."
 installChaincode 2 2
 infoln "Install chaincode on peer3.org2..."
 installChaincode 2 3
-infoln "Install chaincode on peer0.org3..."
-installChaincode 3 0
-infoln "Install chaincode on peer1.org3..."
-installChaincode 3 1
-infoln "Install chaincode on peer2.org3..."
-installChaincode 3 2
-infoln "Install chaincode on peer3.org3..."
-installChaincode 3 3
-infoln "Install chaincode on peer0.org4..."
-installChaincode 4 0
-infoln "Install chaincode on peer1.org4..."
-installChaincode 4 1
-infoln "Install chaincode on peer2.org4..."
-installChaincode 4 2
-infoln "Install chaincode on peer3.org4..."
-installChaincode 4 3
+#infoln "Install chaincode on peer0.org3..."
+# installChaincode 3 0
+# infoln "Install chaincode on peer1.org3..."
+# installChaincode 3 1
+# infoln "Install chaincode on peer2.org3..."
+# installChaincode 3 2
+# infoln "Install chaincode on peer3.org3..."
+# installChaincode 3 3
+# infoln "Install chaincode on peer0.org4..."
+# installChaincode 4 0
+# infoln "Install chaincode on peer1.org4..."
+# installChaincode 4 1
+# infoln "Install chaincode on peer2.org4..."
+# installChaincode 4 2
+# infoln "Install chaincode on peer3.org4..."
+# installChaincode 4 3
 
 ## query whether the chaincode is installed
-FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 queryInstalled 1 0
 
-FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
+#FABRIC_CFG_PATH=${PWD}/../test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/config
 infoln "FABRIC PATH : ${FABRIC_CFG_PATH}"
 
 ## approve the definition for org1
@@ -369,23 +369,23 @@ approveForMyOrg 2 1
 checkCommitReadiness 2 1
 
 ## now approve also for org3
-approveForMyOrg 3 1
+# approveForMyOrg 3 1
 #approveForMyOrg 3 1
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 3 1
+# checkCommitReadiness 3 1
 
 ## now approve also for org4
-approveForMyOrg 4 1
+# approveForMyOrg 4 1
 #approveForMyOrg 4 1
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 4 1
+# checkCommitReadiness 4 1
 
 ## now that we know for sure both orgs have approved, commit the definition
-commitChaincodeDefinition 1 2 3 4
+commitChaincodeDefinition 1 2
 
 ## query on both orgs to see that the definition committed successfully
 # queryCommitted 1 0
@@ -410,7 +410,7 @@ commitChaincodeDefinition 1 2 3 4
 if [ "$CC_INIT_FCN" = "NA" ]; then
   infoln "Chaincode initialization is not required"
 else
-  chaincodeInvokeInit 1 2 3 4
+  chaincodeInvokeInit 1 2
 fi
 
 exit 0

@@ -1,6 +1,6 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/cps16/Documents/Medical_Records'
-make: Leaving directory '/home/cps16/Documents/Medical_Records'
+make: Entering directory '/home/cps16/Documents/LCRecords'
+make: Leaving directory '/home/cps16/Documents/LCRecords'
  
 make: *** No targets specified and no makefile found.  Stop.
 
