@@ -5,7 +5,7 @@ const {DiscoveryService, IdentityContext, Client, Discoverer, Utils} = require('
 const path = require('path');
 const fs = require('fs');
 const FabricCAServices = require('fabric-ca-client');
-const { networkInterfaces } = require('os');
+const { networkInterfaces, userInfo } = require('os');
 const crypto = require('crypto');
 const { query } = require('express');
 const { channel } = require('diagnostics_channel');
@@ -18,7 +18,10 @@ const Endorser = require('fabric-common');
 const yaml = require('js-yaml');
 const ecdsa = require('ecdsa');
 var BigInteger = require('bigi');
-require('node-go-require');
+const { json } = require('stream/consumers');
+const { Query, Endorser,QueryImpl } = require('fabric-common');
+
+//require('node-go-require');
 //const cp_abe = require('')
 //const openssl = require('openssl-nodejs')
 //var CoinKey = require('coinkey')
@@ -28,8 +31,8 @@ require('node-go-require');
 //var Ecdsa = ellipticcurve.Ecdsa;
 //var PrivateKey = ellipticcurve.PrivateKey;
 //const eccrypto = require('eccrypto');
-const elliptic = require('elliptic');
-const { KEYUTIL } = require('jsrsasign');
+//const elliptic = require('elliptic');
+//const { KEYUTIL } = require('jsrsasign');
 
 async function  main(){
     try{
@@ -83,14 +86,15 @@ async function  main(){
         //console.log(network.getChannel('mychannel').getEndorsers()[0].name);
         //console.log(network.getChannel('mychannel').getEndorsers()[0].endpoint.creds);
         let endorsers = [];
+        console.log("MSP", network.getChannel('mychannel').getMsp('peer0'))
         network.getChannel('mychannel').getEndorsers().forEach(element =>{
             if(element.name.startsWith("peer0.org1.example.com") )
             {
                 endorsers.push(element);
             }
-            if(element.name.startsWith("peer0.org2.example.com")){
-                endorsers.push(element);
-            }
+            // if(element.name.startsWith("peer0.org2.example.com")){
+            //     endorsers.push(element);
+            // }
         })
         const contract = network.getContract('LC_Transfer');
         let privData = {priv_peer:[ccp.peers['peer0.org1.example.com'].privateKey.pem, ccp.peers['peer1.org1.example.com'].privateKey.pem, ccp2.peers['peer0.org2.example.com'].privateKey.pem, ccp2.peers['peer1.org2.example.com'].privateKey.pem]}
@@ -145,49 +149,47 @@ async function  main(){
           //console.log("decrypted data: ", decryptedData.toString());
           //let crypto = FabricCAServices.newCryptoSuite({ software: true, keysize: 384 }); 
           console.log(1);
-          const {prvKeyHex} = KEYUTIL.getKey(appUserIdentity.credentials.privateKey)  
+          //const {prvKeyHex} = KEYUTIL.getKey(appUserIdentity.credentials.privateKey)  
           console.log(2);
 
-          const {pubKeyHex} = KEYUTIL.getKey(appUserIdentity.credentials.certificate)
+          //const {pubKeyHex} = KEYUTIL.getKey(appUserIdentity.credentials.certificate)
           console.log(3);
 
           let digest = crypto.createHash('sha256').update(msg).digest("hex")
           console.log(digest);
 
-          const EC = elliptic.ec;
+          //const EC = elliptic.ec;
           console.log(5);
 
-          const ecdsaCurve = elliptic.curves['p256'];
+          //const ecdsaCurve = elliptic.curves['p256'];
           console.log(6);
 
-          const ecdsa = new EC(ecdsaCurve);
+          //const ecdsa = new EC(ecdsaCurve);
           console.log(7);
 
-          const signKey = ecdsa.keyFromPrivate(prvKeyHex, 'hex');
+          //const signKey = ecdsa.keyFromPrivate(prvKeyHex, 'hex');
           console.log(8);
 
-          const sig = ecdsa.sign(Buffer.from(digest, 'hex'), signKey);
+          //const sig = ecdsa.sign(Buffer.from(digest, 'hex'), signKey);
           console.log(9);
 
-          const signature = Buffer.from(sig.toDER())
-          console.log(sig);
+          //const signature = Buffer.from(sig.toDER())
+          //console.log(sig);
 
-          const veriifyKey = ecdsa.keyFromPublic(pubKeyHex, 'hex');
-          console.log(veriifyKey.getPublic().getX().toString('hex'));
+          //const veriifyKey = ecdsa.keyFromPublic(pubKeyHex, 'hex');
+          //console.log(veriifyKey.getPublic().getX().toString('hex'));
 
-          const isverified =  ecdsa.verify(Buffer.from(digest, 'hex'), sig, veriifyKey)
-          console.log(Buffer.from(digest, 'hex'));
+          //const isverified =  ecdsa.verify(Buffer.from(digest, 'hex'), sig, veriifyKey)
+          //console.log(Buffer.from(digest, 'hex'));
 
-          console.log(isverified)
+          //console.log(isverified)
 
           //let pkey = Buffer.from(JSON.stringify({pkey: private_key.toString('base64')}))
-          let message = Buffer.from(JSON.stringify({msg: digest}))
+          //let message = Buffer.from(JSON.stringify({msg: digest}))
           //let signatureJSON = Buffer.from(JSON.stringify({signature : Buffer.from(signature)}))
-          let signatureJSON = Buffer.from(JSON.stringify({sigr : sig.r.toString(), sigs: sig.s.toString(), pub_x: veriifyKey.getPublic().getX().toString('hex'), pub_y: veriifyKey.getPublic().getY().toString('hex')}))
-          let transaction = contract.createTransaction('createPatient')
+          //let signatureJSON = Buffer.from(JSON.stringify({sigr : sig.r.toString(), sigs: sig.s.toString(), pub_x: veriifyKey.getPublic().getX().toString('hex'), pub_y: veriifyKey.getPublic().getY().toString('hex')}))
           //console.log(encryptedData.toString('base64')) 
           //await contract.submitTransaction("createPatient", "patientNumber", "Name", "Age" ,"Doctor_Specialization", "Disease", "Email", "Adhar", "Organization", data)
-          await transaction.setEndorsingPeers(endorsers).submit('patientNumber', 'Name', 'Age' ,'Doctor_Specialization', 'Disease', 'Email', 'Adhar', 'Organization', data, signatureJSON, message);
           //transaction.submit(
           //transaction.submit(,)
           //createPatient(ctx, patientNumber, Name, Age ,Doctor_Specialization, Disease, Email, Adhar, Organization
@@ -196,8 +198,22 @@ async function  main(){
         //   console.log(pet.Name());
         //   pet.SetName('new name...');
         //   console.log(pet.Name());
-
-          gateway.disconnect();
+        let transaction = contract.createTransaction('getData')
+        console.log(endorsers)        
+        let result = await transaction.setEndorsingPeers(endorsers).evaluate('Policy');
+        console.log(JSON.parse(result.toString()))
+        
+        const request = {
+            fcn: 'getData',
+            args: 'Policy',
+            generateTransactionId: false
+        };
+        const queryProposal = network.getChannel().newQuery("LC_Transfer");
+        queryProposal.build(this.identityContext, request);
+        queryProposal.sign(this.identityContext);
+        const query = new Query(queryProposal, this.gatewayOptions.queryHandlerOptions);
+        const results = await this.queryHandler.evaluate(query);
+        gateway.disconnect();  
        }
        catch(ex){
          console.log("exception: " + ex);

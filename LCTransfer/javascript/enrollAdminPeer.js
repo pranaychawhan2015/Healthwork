@@ -23,7 +23,7 @@ async function main() {
         const ca = new FabricCAServices(caInfo.url, { trustedRoots: caTLSCACerts, verify: false }, caInfo.caName);
 
         const identityLabel = 'Admin@org1.example.com';
-
+        
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), 'wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
@@ -31,27 +31,37 @@ async function main() {
 
         // Check to see if we've already enrolled the admin user.
         const identity = await wallet.get(identityLabel);
-        if (identity) {
-            console.log('An identity for the admin user "admin" already exists in the wallet');
-            return;
-        }
-
+        // if (identity) {
+        //     console.log('An identity for the admin user "admin" already exists in the wallet');
+        //     return;
+        // }
         // Enroll the admin user, and import the new identity into the wallet.
-        const cert = fs.readFileSync("/home/cps16/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/msp/signcerts/cert.pem").toString();
-        const key = fs.readFileSync("/home/cps16/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/33ff35791f8d221407c9e2543a9a8aa605d27149d3886dd2cdb3282af3350175_sk").toString();
+        // const cert = fs.readFileSync("/home/cps16/Documents/New/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem").toString();
+        // const key = fs.readFileSync("/home/cps16/Documents/New/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/77d8f7fe866551bf558ed8a9e68f92db24ff269a224c56b8049539cc31d30d6b_sk").toString();
         
         //const identityLabel = 'Admin@org1.example.com';
 
         //const enrollment = await ca.reenroll({ enrollmentID: 'admin', enrollmentSecret: 'adminpw', ecert:true});
-        const x509Identity = {
-            credentials: {
-                certificate: cert,
-                privateKey: key,
-            },
-            mspId: 'Org1MSP',
-            type: 'X.509',
-        };
-        await wallet.put(identityLabel, x509Identity);
+        // const x509Identity = {
+        //     credentials: {
+        //         certificate: cert,
+        //         privateKey: key,
+        //     },
+        //     mspId: 'Org1MSP',
+        //     type: 'X.509',
+        // };
+
+        // await wallet.put(identityLabel, x509Identity);
+
+        const provider = wallet.getProviderRegistry().getProvider('X.509');
+        
+        const adminUser = await provider.getUserContext(identity, identityLabel);
+        let identityService = ca.newIdentityService()
+
+        let allIdentities = await identityService.getAll(adminUser)
+        console.log(1)
+        
+        console.log("AllIdentities", allIdentities)
         console.log('Successfully enrolled admin user "admin" and imported it into the wallet');
 
     } catch (error) {

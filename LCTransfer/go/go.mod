@@ -23,6 +23,7 @@ require (
 	github.com/golang/protobuf v1.3.3 // indirect
 	github.com/google/certificate-transparency-go v1.0.21 // indirect
 	github.com/google/gofuzz v1.0.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hpcloud/tail v1.0.0 // indirect
 	github.com/hyperledger/fabric v2.1.0+incompatible // indirect

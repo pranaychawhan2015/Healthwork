@@ -16,6 +16,7 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/valyala/fastjson"
 
 	//"golang.org/x/exp/slices"
@@ -33,7 +34,6 @@ import (
 
 	//"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/context"
 
-	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel/invoke"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 	"github.com/hyperledger/fabric-sdk-go/pkg/gateway"
 
@@ -102,206 +102,6 @@ type PolicyList struct {
 // 	brokerAddress = "172.16.85.208:9092"
 // )
 
-type Org1 struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
-	Client  struct {
-		Organization string `json:"organization"`
-		Connection   struct {
-			Timeout struct {
-				Peer struct {
-					Endorser string `json:"endorser"`
-				} `json:"peer"`
-			} `json:"timeout"`
-		} `json:"connection"`
-	} `json:"client"`
-	Organizations struct {
-		Org1 struct {
-			Mspid                  string   `json:"mspid"`
-			Peers                  []string `json:"peers"`
-			CertificateAuthorities []string `json:"certificateAuthorities"`
-		} `json:"Org1"`
-	} `json:"organizations"`
-	Peers struct {
-		Peer0Org1ExampleCom struct {
-			URL        string `json:"url"`
-			TLSCACerts struct {
-				Pem string `json:"pem"`
-			} `json:"tlsCACerts"`
-			GrpcOptions struct {
-				SslTargetNameOverride string `json:"ssl-target-name-override"`
-				HostnameOverride      string `json:"hostnameOverride"`
-			} `json:"grpcOptions"`
-			SignCert struct {
-				Pem string `json:"pem"`
-			} `json:"signCert"`
-			PrivateKey struct {
-				Pem string `json:"pem"`
-			} `json:"privateKey"`
-		} `json:"peer0.org1.example.com"`
-		Peer1Org1ExampleCom struct {
-			URL        string `json:"url"`
-			TLSCACerts struct {
-				Pem string `json:"pem"`
-			} `json:"tlsCACerts"`
-			GrpcOptions struct {
-				SslTargetNameOverride string `json:"ssl-target-name-override"`
-				HostnameOverride      string `json:"hostnameOverride"`
-			} `json:"grpcOptions"`
-			SignCert struct {
-				Pem string `json:"pem"`
-			} `json:"signCert"`
-			PrivateKey struct {
-				Pem string `json:"pem"`
-			} `json:"privateKey"`
-		} `json:"peer1.org1.example.com"`
-		Peer2Org1ExampleCom struct {
-			URL        string `json:"url"`
-			TLSCACerts struct {
-				Pem string `json:"pem"`
-			} `json:"tlsCACerts"`
-			GrpcOptions struct {
-				SslTargetNameOverride string `json:"ssl-target-name-override"`
-				HostnameOverride      string `json:"hostnameOverride"`
-			} `json:"grpcOptions"`
-			SignCert struct {
-				Pem string `json:"pem"`
-			} `json:"signCert"`
-			PrivateKey struct {
-				Pem string `json:"pem"`
-			} `json:"privateKey"`
-		} `json:"peer2.org1.example.com"`
-		Peer3Org1ExampleCom struct {
-			URL        string `json:"url"`
-			TLSCACerts struct {
-				Pem string `json:"pem"`
-			} `json:"tlsCACerts"`
-			GrpcOptions struct {
-				SslTargetNameOverride string `json:"ssl-target-name-override"`
-				HostnameOverride      string `json:"hostnameOverride"`
-			} `json:"grpcOptions"`
-			SignCert struct {
-				Pem string `json:"pem"`
-			} `json:"signCert"`
-			PrivateKey struct {
-				Pem string `json:"pem"`
-			} `json:"privateKey"`
-		} `json:"peer3.org1.example.com"`
-	} `json:"peers"`
-	CertificateAuthorities struct {
-		CaOrg1ExampleCom struct {
-			URL        string `json:"url"`
-			CaName     string `json:"caName"`
-			TLSCACerts struct {
-				Pem []string `json:"pem"`
-			} `json:"tlsCACerts"`
-			HTTPOptions struct {
-				Verify bool `json:"verify"`
-			} `json:"httpOptions"`
-		} `json:"ca.org1.example.com"`
-	} `json:"certificateAuthorities"`
-}
-
-type Org2 struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
-	Client  struct {
-		Organization string `json:"organization"`
-		Connection   struct {
-			Timeout struct {
-				Peer struct {
-					Endorser string `json:"endorser"`
-				} `json:"peer"`
-			} `json:"timeout"`
-		} `json:"connection"`
-	} `json:"client"`
-	Organizations struct {
-		Org2 struct {
-			Mspid                  string   `json:"mspid"`
-			Peers                  []string `json:"peers"`
-			CertificateAuthorities []string `json:"certificateAuthorities"`
-		} `json:"Org2"`
-	} `json:"organizations"`
-	Peers struct {
-		Peer0Org2ExampleCom struct {
-			URL        string `json:"url"`
-			TLSCACerts struct {
-				Pem string `json:"pem"`
-			} `json:"tlsCACerts"`
-			GrpcOptions struct {
-				SslTargetNameOverride string `json:"ssl-target-name-override"`
-				HostnameOverride      string `json:"hostnameOverride"`
-			} `json:"grpcOptions"`
-			SignCert struct {
-				Pem string `json:"pem"`
-			} `json:"signCert"`
-			PrivateKey struct {
-				Pem string `json:"pem"`
-			} `json:"privateKey"`
-		} `json:"peer0.org2.example.com"`
-		Peer1Org2ExampleCom struct {
-			URL        string `json:"url"`
-			TLSCACerts struct {
-				Pem string `json:"pem"`
-			} `json:"tlsCACerts"`
-			GrpcOptions struct {
-				SslTargetNameOverride string `json:"ssl-target-name-override"`
-				HostnameOverride      string `json:"hostnameOverride"`
-			} `json:"grpcOptions"`
-			SignCert struct {
-				Pem string `json:"pem"`
-			} `json:"signCert"`
-			PrivateKey struct {
-				Pem string `json:"pem"`
-			} `json:"privateKey"`
-		} `json:"peer1.org2.example.com"`
-		Peer2Org2ExampleCom struct {
-			URL        string `json:"url"`
-			TLSCACerts struct {
-				Pem string `json:"pem"`
-			} `json:"tlsCACerts"`
-			GrpcOptions struct {
-				SslTargetNameOverride string `json:"ssl-target-name-override"`
-				HostnameOverride      string `json:"hostnameOverride"`
-			} `json:"grpcOptions"`
-			SignCert struct {
-				Pem string `json:"pem"`
-			} `json:"signCert"`
-			PrivateKey struct {
-				Pem string `json:"pem"`
-			} `json:"privateKey"`
-		} `json:"peer2.org2.example.com"`
-		Peer3Org2ExampleCom struct {
-			URL        string `json:"url"`
-			TLSCACerts struct {
-				Pem string `json:"pem"`
-			} `json:"tlsCACerts"`
-			GrpcOptions struct {
-				SslTargetNameOverride string `json:"ssl-target-name-override"`
-				HostnameOverride      string `json:"hostnameOverride"`
-			} `json:"grpcOptions"`
-			SignCert struct {
-				Pem string `json:"pem"`
-			} `json:"signCert"`
-			PrivateKey struct {
-				Pem string `json:"pem"`
-			} `json:"privateKey"`
-		} `json:"peer3.org2.example.com"`
-	} `json:"peers"`
-	CertificateAuthorities struct {
-		CaOrg2ExampleCom struct {
-			URL        string `json:"url"`
-			CaName     string `json:"caName"`
-			TLSCACerts struct {
-				Pem []string `json:"pem"`
-			} `json:"tlsCACerts"`
-			HTTPOptions struct {
-				Verify bool `json:"verify"`
-			} `json:"httpOptions"`
-		} `json:"ca.org2.example.com"`
-	} `json:"certificateAuthorities"`
-}
-
 func main() {
 	os.Setenv("DISCOVERY_AS_LOCALHOST", "true")
 	wallet, err := gateway.NewFileSystemWallet("wallet")
@@ -353,7 +153,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	contract := network.GetContract("LC_Transfer9")
+	contract := network.GetContract("LC_Transfer")
 	//consume(ctx)
 
 	// create a new logger that outputs to stdout
@@ -365,6 +165,7 @@ func main() {
 	// }
 
 	msg := `{"Name":"Pranay", "Email":"PranayChawhan2015@gmail.com", "Policy":"(National_Highway AND Suppliers_Raw_materials AND (Sand OR Soils OR Cement) )"}`
+	//msg := `{"Name":"Pranay", "Email":"PranayChawhan2102@gmail.com"}`
 	// after receiving the message, log its value
 	fmt.Println("received: ", msg)
 
@@ -374,8 +175,32 @@ func main() {
 	if err != nil {
 		fmt.Println("Error marshalling the json", err)
 	} else {
-
 		policy := msg1["Policy"]
+		uuidWithHyphen := uuid.New()
+		fmt.Println(uuidWithHyphen)
+		msg1["key"] = uuidWithHyphen.String()
+		if policy == "" {
+			total := 0.0
+			var network1 bytes.Buffer        // Stand-in for a network connection
+			enc := gob.NewEncoder(&network1) // Will write to network.
+			err = enc.Encode(msg1)
+
+			plaintext := hex.EncodeToString(network1.Bytes())
+			var MessageMap map[string]string
+			MessageMap = make(map[string]string, 0)
+			MessageMap["Value"] = plaintext
+			res2, _ := json.Marshal(MessageMap)
+
+			for i := 0; i < 1000; i++ {
+				start := time.Now()
+				_, err := contract.SubmitTransaction("CreateRecord", string(res2), "")
+				elapsed := time.Now().Sub(start)
+				total += elapsed.Seconds()
+				fmt.Println("Error", err)
+			}
+			fmt.Printf("Transaction time is %f seconds", total/1000)
+			return
+		}
 		delete(msg1, "Policy")
 		msg := msg1
 
@@ -502,8 +327,8 @@ func main() {
 		json.Unmarshal(res, &resData)
 
 		res1 := hex.EncodeToString(ciphertext)
-		fmt.Println(res1)
-		fmt.Println(ciphertext)
+		//fmt.Println(res1)
+		//fmt.Println(ciphertext)
 
 		var MessageMap map[string]string
 		MessageMap = make(map[string]string, 0)
@@ -511,7 +336,7 @@ func main() {
 		MessageMap["Nonce"] = hex.EncodeToString(nonce)
 
 		res2, _ := json.Marshal(MessageMap)
-		fmt.Println("res2", string(res2))
+		//fmt.Println("res2", string(res2))
 
 		plaintext2, err := aesgcm.Open(nil, nonce, ciphertext, nil)
 		if err != nil {
@@ -566,29 +391,33 @@ func main() {
 
 		fmt.Println("res2", string(res2))
 
-		fmt.Println(endorsers)
-		if len(endorsers) == 0 {
-			fmt.Println("No Endorsers from the required Policy")
+		//fmt.Println("Endorsers", endorsers)
+		// if len(endorsers) == 0 {
+		// 	fmt.Println("No Endorsers from the required Policy")
+		// } else {
+
+		txn, _ := contract.CreateTransaction("CreateRecord", gateway.WithEndorsingPeers(endorsers...))
+		fmt.Println("key", vectorArray[0].String())
+
+		// byteArray1 := make([][]byte, 0)
+		// byteArray1 = append(byteArray1, []byte(string(res2)))
+		// byteArray1 = append(byteArray1, []byte(string(res)))
+		// endorsementHandler := invoke.NewEndorsementHandler()
+		// endorsementHandler.Handle(&invoke.RequestContext{Request: invoke.Request{ChaincodeID: "LCTransfer39", Fcn: "CreateRecord", Args: byteArray1}}, nil)
+		total := 0.0
+		//for i := 0; i < 1000; i++ {
+		start := time.Now()
+		_, err = txn.Submit(string(res2), string(res))
+		elapsed := time.Now().Sub(start)
+		total += elapsed.Seconds()
+		if err != nil {
+			fmt.Println(err)
 		} else {
-			txn, _ := contract.CreateTransaction("CreateRecord", gateway.WithEndorsingPeers(endorsers...))
-			fmt.Println("key", vectorArray[0].String())
-
-			byteArray1 := make([][]byte, 0)
-			byteArray1 = append(byteArray1, []byte(string(res2)))
-			byteArray1 = append(byteArray1, []byte(string(res)))
-			endorsementHandler := invoke.NewEndorsementHandler()
-			endorsementHandler.Handle(&invoke.RequestContext{Request: invoke.Request{ChaincodeID: "LC_Transfer9", Fcn: "CreateRecord", Args: byteArray1}}, nil)
-
-			start := time.Now()
-			_, err = txn.Submit(string(res2), string(res))
-			end := time.Now()
-			elapsed := end.Sub(start)
-			if err != nil {
-				fmt.Println(err)
-			} else {
-				fmt.Printf("Transaction time is %f seconds", elapsed.Seconds())
-			}
+			fmt.Printf("Transaction time is %f seconds", elapsed.Seconds())
 		}
+		//}
+		fmt.Printf("Transaction time is %f seconds", total/1000)
+		//}
 
 	}
 
@@ -662,90 +491,56 @@ func GetEndorsers(Path string, attributes map[string]*big.Int, endorsersList []s
 	}
 
 	v.GetObject().Visit(func(k []byte, v *fastjson.Value) {
-		fmt.Printf("key=%s, value=%s\n", k, v)
+		//fmt.Printf("key=%s, value=%s\n", k, v)
 
 		// for nested objects call Visit again
 		if string(k) == "peers" {
 			v.GetObject().Visit(func(k []byte, v *fastjson.Value) {
 				signValue := v.GetObject("signCert")
-				fmt.Println("SignValue", signValue.Get("pem").String())
+				//fmt.Println("SignValue", signValue.Get("pem").String())
 				bytes1, _ := signValue.Get("pem").StringBytes()
-				fmt.Println("bytes", string(bytes1))
+				//fmt.Println("bytes", string(bytes1))
 				pem2, _ := pem.Decode(bytes1)
 				cert, err2 := x509.ParseCertificate(pem2.Bytes)
 				if err2 != nil {
 					panic(err2)
 				}
+				fmt.Println("peer address", cert.DNSNames)
 
 				count := 0
 				peerName := string(k)
 				var resData map[string]map[string]string
-				json.Unmarshal(cert.Extensions[5].Value, &resData)
+
+				for _, value := range cert.Extensions {
+					json.Unmarshal(value.Value, &resData)
+					if resData["attrs"] != nil {
+						break
+					}
+				}
 
 				var actualMap = resData["attrs"]
-
+				fmt.Println("attrs", actualMap)
 				//fmt.Println("Endorsers", actualMap)
 				for _, value := range actualMap {
 					value1 := attributes[value]
 					if value1 != nil {
-						fmt.Println("Count", count, "Value", value)
+						//fmt.Println("Count", count, "Value", value)
 						count++
 					}
 				}
 				url := v.Get("url").String()
-				fmt.Println("url", url)
-				fmt.Println("Count", count)
-				if count == len(attributes) {
-					stringArray := strings.Split(url, "grpcs://localhost:")
-					peerName := string(peerName) + ":" + stringArray[1]
-					endorsersList = append(endorsersList, strings.ReplaceAll(peerName, `"`, ""))
-					fmt.Println("PeerNAme", strings.ReplaceAll(peerName, `"`, ""))
-				}
-
+				//fmt.Println("url", url)
+				//fmt.Println("Count", count)
+				//if count == len(attributes) {
+				stringArray := strings.Split(url, "grpcs://localhost:")
+				peerName = string(peerName) + ":" + stringArray[1]
+				endorsersList = append(endorsersList, strings.ReplaceAll(peerName, `"`, ""))
+				//fmt.Println("PeerNAme", strings.ReplaceAll(peerName, `"`, ""))
+				//}
 			})
 		}
 	})
 	return endorsersList
-}
-
-func RecursivePolicyFinder(matrix data.Matrix, rowAttributes []string) map[string]*big.Int {
-
-	attributes := make(map[int][]string, 0)
-
-	count := 0
-	duplicateAttributes := make([]string, 0)
-	totalMap := make(map[string]*big.Int, 0)
-
-	for i := 0; i < len(matrix); i++ {
-		fmt.Println(matrix[i])
-		totalMap[rowAttributes[i]] = big.NewInt(int64(i))
-
-		for j := i + 1; j < len(matrix); j++ {
-			if reflect.DeepEqual(matrix[i], matrix[j]) {
-				attributes[count] = append(attributes[count], rowAttributes[i])
-				attributes[count] = append(attributes[count], rowAttributes[j])
-			}
-		}
-		count += 1
-	}
-
-	count = 0
-	fmt.Println("attributes", attributes)
-	for _, value := range attributes {
-		rand1.Seed(time.Now().UnixNano())
-		newCondition := randNew()
-		if newCondition {
-			duplicateAttributes = append(duplicateAttributes, value[0])
-			delete(totalMap, value[1])
-		} else {
-			duplicateAttributes = append(duplicateAttributes, value[1])
-			delete(totalMap, value[0])
-		}
-	}
-
-	fmt.Println("Duplicate Attributes", duplicateAttributes)
-
-	return totalMap
 }
 
 func GetPolicy(matrix data.Matrix, rowAttributes []string) map[string]*big.Int {

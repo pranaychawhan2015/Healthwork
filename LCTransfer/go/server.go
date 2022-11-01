@@ -15,6 +15,8 @@
 // 	"reflect"
 // 	"time"
 
+// 	"github.com/google/uuid"
+
 // 	//"golang.org/x/exp/slices"
 
 // 	// "github.com/cloudflare/cfssl/api"
@@ -58,8 +60,8 @@
 
 // const (
 // 	topic = "quickstart-events"
-// 	//brokerAddress = "172.16.85.128:9092"
-// 	brokerAddress = "172.16.85.143:9092"
+// 	//brokerAddress = "172.16.85.152:9092"
+// 	brokerAddress = "192.168.102.46:9092"
 // )
 
 // type Policy struct {
@@ -149,7 +151,7 @@
 
 // 	ctx := context.Background()
 // 	//consume(ctx)
-
+// 	//return
 // 	// create a new logger that outputs to stdout
 // 	// and has the `kafka reader` prefix
 // 	l := log.New(os.Stdout, "kafka reader: ", 2)
@@ -175,11 +177,29 @@
 
 // 		var msg1 map[string]string
 // 		err = json.Unmarshal([]byte(string(msg.Value)), &msg1)
+// 		uuidWithHyphen := uuid.New()
+// 		fmt.Println(uuidWithHyphen)
+// 		msg1["key"] = uuidWithHyphen.String()
 
 // 		if err != nil {
 // 			fmt.Println("Error marshalling the json", err)
 // 		} else {
 // 			policy := msg1["Policy"]
+// 			if policy == "" {
+// 				var network1 bytes.Buffer        // Stand-in for a network connection
+// 				enc := gob.NewEncoder(&network1) // Will write to network.
+// 				err = enc.Encode(msg1)
+
+// 				plaintext := hex.EncodeToString(network1.Bytes())
+// 				var MessageMap map[string]string
+// 				MessageMap = make(map[string]string, 0)
+// 				MessageMap["Value"] = plaintext
+// 				res2, _ := json.Marshal(MessageMap)
+
+// 				_, err := contract.SubmitTransaction("CreateRecord", string(res2), "")
+// 				fmt.Println("Error", err)
+// 				continue
+// 			}
 // 			delete(msg1, "Policy")
 // 			msg := msg1
 
@@ -298,7 +318,7 @@
 // 			}
 
 // 			policyList := make(map[string]map[string]*big.Int)
-// 			//fmt.Println("Policy", policyMap)
+// 			fmt.Println("Policy", policyMap)
 // 			policyList["policy"] = policyMap
 
 // 			res, err := json.Marshal(policyList)
@@ -468,7 +488,6 @@
 // 	if err != nil {
 // 		log.Fatal("Error", err)
 // 	}
-
 // 	v.GetObject().Visit(func(k []byte, v *fastjson.Value) {
 // 		//fmt.Printf("key=%s, value=%s\n", k, v)
 
@@ -488,7 +507,14 @@
 // 				count := 0
 // 				peerName := string(k)
 // 				var resData map[string]map[string]string
-// 				json.Unmarshal(cert.Extensions[5].Value, &resData)
+// 				for _, value := range cert.Extensions {
+// 					json.Unmarshal(value.Value, &resData)
+// 					if resData["attrs"] != nil {
+// 						break
+// 					}
+// 				}
+// 				//fmt.Println("New Cert", cert.Extensions[4].Value)
+// 				fmt.Println("Res Data", resData)
 
 // 				var actualMap = resData["attrs"]
 
@@ -528,7 +554,7 @@
 // 		}
 // 		valueFromMap := RowToAttrib[newString]
 // 		valueFromMap = append(valueFromMap, rowAttributes[i])
-// 		//fmt.Println("Row to Attr", valueFromMap)
+// 		fmt.Println("Row to Attr", valueFromMap)
 // 		for j := i + 1; j < len(matrix); j++ {
 // 			newString1 := ""
 
@@ -543,10 +569,20 @@
 // 	}
 // 	totalMap := make(map[string]*big.Int, 0)
 
-// 	//fmt.Println("RowToAttr", RowToAttrib)
+// 	fmt.Println("RowToAttr", RowToAttrib)
 // 	count := 1
 // 	for _, value := range RowToAttrib {
-// 		totalMap[value[0]] = big.NewInt(int64(count))
+// 		index := 0
+// 		if len(value) > 1 {
+// 			rand1.Seed(time.Now().UnixNano())
+// 			min := 0
+// 			max := len(value) - 1
+// 			index = rand1.Intn(max-min+1) + min
+// 			fmt.Println("index", index)
+// 		} else {
+// 			index = 0
+// 		}
+// 		totalMap[value[index]] = big.NewInt(int64(count))
 // 		count++
 // 	}
 

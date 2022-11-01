@@ -20,7 +20,7 @@ const Endorser = require('fabric-common');
 const yaml = require('js-yaml');
 const ecdsa = require('ecdsa');
 var BigInteger = require('bigi');
-require('node-go-require');
+//require('node-go-require');
 
 
 async function  main(){
@@ -76,7 +76,7 @@ async function  main(){
         //console.log(network.getChannel('mychannel').getEndorsers()[0].endpoint.creds);
         let endorsers = [];
 		let mychannel = network.getChannel('mychannel')
-        mychannel.getEndorsers().forEach(element =>{
+        mychannel.getEndorsers().map(async(element) => {
             if(element.name.startsWith("peer0.org1.example.com") )
             {
                 endorsers.push(element);
@@ -84,7 +84,15 @@ async function  main(){
             if(element.name.startsWith("peer0.org2.example.com")){
                 endorsers.push(element);
             }
+            let contract = network.getContract('LC_Transfer')
+			// response contains an array of collection definitions
+            let transaction = contract.createTransaction('getData');
+            let endorsersArray = []
+            endorsersArray.push(element)
+            let result = await transaction.setEndorsingPeers(endorsersArray).evaluate('96f082f3e5a0f67fd30103185f00359f')
+            console.log("testing", result)
         })
+        console.log("MSP", mychannel.getMsp("Org1MSP"))
 		//console.log("endorsers", endorsers)
           let myMap = new Map()
 		  myMap.set("Email", "Pranay@gmail.com")
@@ -92,9 +100,9 @@ async function  main(){
 		  
 		  var str = JSON.stringify(Array.from( myMap.entries())); 
 		  console.log(str)
-		  //   const contract = network.getContract('LC_Transfer8');
+		  //   const contract = network.getContract('LC_Transfer');
 		  //   await contract.submitTransaction('createRecord', str)
-		  const discovery = new DiscoveryService('LC_Transfer8', network.getChannel());
+		  const discovery = new DiscoveryService('LC_Transfer', network.getChannel());
          //discovery.targets = endorsers;
          const userContext = await provider.getUserContext(appUserIdentity, "appUser");
    
@@ -103,7 +111,7 @@ async function  main(){
 		 await discoverer.connect(endorsers[0].endpoint);
 		
 
-         const endorsement = network.getChannel().newEndorsement('LC_Transfer8');
+         const endorsement = network.getChannel().newEndorsement('LC_Transfer');
 
         //  const eventhandler = new TransactionEventHandler(endorsement.getTransactionId(), network, DefaultQueryHandlerStrategies.PREFER_MSPID_SCOPE_ROUND_ROBIN);
 		//  console.log(4);
@@ -121,16 +129,17 @@ async function  main(){
        
            // input to the build a proposal request
            let build_proposal_request = {
-            args: [str],
-			transientMap: {
-				'marblename': Buffer.from('marble1'), // string <-> byte[]
-				'color': Buffer.from('red'), // string <-> byte[]
-				'owner': Buffer.from('John'), // string <-> byte[]
-				'size': Buffer.from('85'), // string <-> byte[]
-				'price': Buffer.from('99') // string <-> byte[]
-			},
-			fcn: 'createRecord'
-            //fcn: 'initLedger'
+            // args: [str],
+			// transientMap: {
+			// 	'marblename': Buffer.from('marble1'), // string <-> byte[]
+			// 	'color': Buffer.from('red'), // string <-> byte[]
+			// 	'owner': Buffer.from('John'), // string <-> byte[]
+			// 	'size': Buffer.from('85'), // string <-> byte[]
+			// 	'price': Buffer.from('99') // string <-> byte[]
+			// },
+			fcn: 'initLedger'
+            // args:['96f082f3e5a0f67fd30103185f00359f'],
+            // fcn: 'getData'
           };
 
            endorsement.build(new IdentityContext(userContext, network.getChannel().client), build_proposal_request);
@@ -160,7 +169,7 @@ async function  main(){
              requestTimeout: 60000
              };
 
-           commit.chaincodeId = 'LC_Transfer8';
+           commit.chaincodeId = 'LC_Transfer';
            commit.build(new IdentityContext(userContext, network.getChannel().client), build_proposal_request);
            commit.sign(new IdentityContext(userContext, network.getChannel().client));
            let committedResults = await commit.send(commit_request); 
@@ -171,13 +180,14 @@ async function  main(){
 			target: endorsers
 		};
 		
-		try {
-				network.getContract('LC_Transfer8')
-			// response contains an array of collection definitions
-			console.log('response', response)
-		} catch (error) {
-			throw error;
-		}
+		// try {
+        
+        // })
+            
+            console.log('response', response)
+		// } catch (error) {
+		// 	throw error;
+		// }
 		
 
           gateway.disconnect();

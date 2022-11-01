@@ -30,6 +30,14 @@ async function main() {
         // Check to see if we've already enrolled the admin user.
         const identity = await wallet.get('admin');
         if (identity) {
+            let identityService = ca.newIdentityService()
+            const provider = wallet.getProviderRegistry().getProvider('X.509');
+            const adminUser = await provider.getUserContext(identity, 'admin');
+            let responses = await identityService.getAll(adminUser)
+            responses.result.identities.forEach(response =>{
+                console.log(response.id)
+                console.log(response.attrs)
+            })
             console.log('An identity for the admin user "admin" already exists in the wallet');
             return;
         }

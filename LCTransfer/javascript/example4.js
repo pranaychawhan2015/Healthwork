@@ -10,6 +10,7 @@ class BinaryTreeNode {
     get isLeaf() {
       return this.left === null && this.right === null;
     }
+    
   
     get hasChildren() {
       return !this.isLeaf;
